@@ -3,14 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-<form  action="/post" method="post">
-    제목 : <input type="text" name="title"> <br>
-    작성자 : <input type="text" name="writer"> <br>
-    <textarea name="content"></textarea><br>
+<body class="m-5">
 
-    <input type="submit" value="등록">
-</form>
+    <form action="/post" method="post">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="row">
+                    <label class="col-2 col-form-label" for="title">제목 : </label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" id="title" name="title">
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <label class="col-2 col-form-label" for="writer">작성자 : </label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" id="writer" name="writer">
+                    </div>
+                </div>
+            </div>
+            <div class="col text-end">
+                <input class="btn btn-primary" type="submit" value="등록">
+            </div>
+        </div>
+
+        <textarea class="form-control" name="content"></textarea><br>
+    </form>
+
 </body>
 </html>

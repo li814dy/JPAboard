@@ -3,17 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-<form th:action="@{'/post/edit/' + ${boardDto.id}}" method="post">
-    <input type="hidden" name="_method" value="put"/>
-    <input type="hidden" name="id" th:value="${boardDto.id}"/>
+<body class="m-5">
 
-    제목 : <input type="text" name="title" th:value="${boardDto.title}"> <br>
-    작성자 : <input type="text" name="writer" th:value="${boardDto.writer}"> <br>
-    <textarea name="content" th:text="${boardDto.content}"></textarea><br>
+    <form th:action="@{'/post/edit/' + ${boardDto.id}}" method="post">
+        <input type="hidden" name="_method" value="put"/>
+        <input type="hidden" name="id" th:value="${boardDto.id}"/>
 
-    <input type="submit" value="수정">
-</form>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="row">
+                    <label class="col-2 col-form-label" for="title">제목 : </label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" id="title" name="title" th:value="${boardDto.title}">
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <label class="col-2 col-form-label" for="writer">작성자 : </label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" id="writer" name="writer" th:value="${boardDto.writer}">
+                    </div>
+                </div>
+            </div>
+            <div class="col text-end">
+                <input class="btn btn-secondary" type="submit" value="수정">
+            </div>
+        </div>
+
+        <textarea class="form-control" name="content"></textarea><br>
+    </form>
+
 </body>
 </html>

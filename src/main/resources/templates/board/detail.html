@@ -3,24 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-    <h2 th:text="${boardDto.title}"></h2>
-    <p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
-
-    <p th:text="${boardDto.content}"></p>
+<body class="m-5">
 
     <!-- 수정/삭제 -->
-    <div>
-        <a th:href="@{'/post/edit/' + ${boardDto.id}}">
-            <button>수정</button>
-        </a>
+    <form class="mb-3" action="/board/search" method="GET">
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary" th:href="@{'/post/edit/' + ${boardDto.id}}">수정</a>
+            </div>
+            <div class="col text-end">
+                <form id="delete-form" th:action="@{'/post/' + ${boardDto.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button class="btn btn-secondary" id="delete-btn">삭제</button>
+                </form>
+            </div>
+        </div>
+    </form>
 
-        <form id="delete-form" th:action="@{'/post/' + ${boardDto.id}}" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-            <button id="delete-btn">삭제</button>
-        </form>
+    <div class="row">
+        <div class="col">
+            <h2 th:text="${boardDto.title}"></h2>
+        </div>
+        <div class="col text-end">
+            <p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
+        </div>
     </div>
+
+    <p class="fs-5" th:text="${boardDto.content}"></p>
 
 <!-- 변수 셋팅 -->
 <script th:inline="javascript">

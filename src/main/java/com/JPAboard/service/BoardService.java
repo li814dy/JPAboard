@@ -20,13 +20,13 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 번호 수
-    private static final int PAGE_POST_COUNT = 4; // 한 페이지에 존재하는 게시글 수
+    private static final int PAGE_POST_COUNT = 5; // 한 페이지에 존재하는 게시글 수
 
     @Transactional
     public List<BoardDto> getBoardlist(Integer pageNum) {
         Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
 
-        List<BoardEntity> boardEntities = boardRepository.findAll();
+        List<BoardEntity> boardEntities = page.getContent();
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         for (BoardEntity boardEntity : boardEntities) {
@@ -34,32 +34,6 @@ public class BoardService {
         }
 
         return boardDtoList;
-    }
-
-    @Transactional
-    public BoardDto getPost(Long id) {
-        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
-        BoardEntity boardEntity = boardEntityWrapper.get();
-
-        BoardDto boardDTO = BoardDto.builder()
-                .id(boardEntity.getId())
-                .title(boardEntity.getTitle())
-                .content(boardEntity.getContent())
-                .writer(boardEntity.getWriter())
-                .createdDate(boardEntity.getCreatedDate())
-                .build();
-
-        return boardDTO;
-    }
-
-    @Transactional
-    public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
-    }
-
-    @Transactional
-    public void deletePost(Long id) {
-        boardRepository.deleteById(id);
     }
 
     // 페이징 설정
@@ -91,6 +65,32 @@ public class BoardService {
         }
 
         return pageList;
+    }
+
+    @Transactional
+    public BoardDto getPost(Long id) {
+        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
+        BoardEntity boardEntity = boardEntityWrapper.get();
+
+        BoardDto boardDTO = BoardDto.builder()
+                .id(boardEntity.getId())
+                .title(boardEntity.getTitle())
+                .content(boardEntity.getContent())
+                .writer(boardEntity.getWriter())
+                .createdDate(boardEntity.getCreatedDate())
+                .build();
+
+        return boardDTO;
+    }
+
+    @Transactional
+    public Long savePost(BoardDto boardDto) {
+        return boardRepository.save(boardDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public void deletePost(Long id) {
+        boardRepository.deleteById(id);
     }
 
     // 글제목 기준 검색 설정

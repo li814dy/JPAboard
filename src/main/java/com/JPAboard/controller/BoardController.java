@@ -1,4 +1,4 @@
-package com.JPAboard.Controller;
+package com.JPAboard.controller;
 
 import com.JPAboard.dto.BoardDto;
 import com.JPAboard.service.BoardService;

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableJpaRepositories("com.JPAboard.domain.repository")
 public class JPAboard {
 
 	public static void main(String[] args) {

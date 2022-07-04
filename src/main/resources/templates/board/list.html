@@ -7,64 +7,65 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body class="m-5">
-<!-- HEADER -->
-<div th:insert="common/header.html" id="header"></div>
+    <!-- HEADER -->
+    <div class="mb-3" th:insert="common/header.html" id="header"></div>
+    <div class="mb-3" th:insert="common/banner.html" id="banner"></div>
 
-<!-- 검색 form -->
-<form class="m-1" action="/board/search" method="GET">
-    <div class="row">
-        <div class="col">
-            <a class="btn btn-primary" th:href="@{/post}">글쓰기</a>
+    <!-- 검색 form -->
+    <form class="mb-3 p-2 rounded bg-light" action="/board/search" method="GET">
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary" th:href="@{/post}">글쓰기</a>
+            </div>
+            <div class="col"></div>
+            <div class="col input-group text-end">
+                <input class="form-control" name="keyword" type="text" placeholder="검색어를 입력해주세요">
+                <button class="btn btn-secondary">검색하기</button>
+            </div>
         </div>
-        <div class="col"></div>
-        <div class="col input-group text-end">
-            <input class="form-control" name="keyword" type="text" placeholder="검색어를 입력해주세요">
-            <button class="btn btn-secondary">검색하기</button>
-        </div>
-    </div>
-</form>
+    </form>
 
-<table class = "table table-hover mb-3">
-    <thead>
-    <tr>
-        <th width="10%">번호</th>
-        <th width="30%">글제목</th>
-        <th width="30%">작성자</th>
-        <th width="30%">작성일</th>
-    </tr>
-    </thead>
+    <table class = "table table-hover mb-3">
+        <thead>
+        <tr>
+            <th width="10%">번호</th>
+            <th width="30%">글제목</th>
+            <th width="30%">작성자</th>
+            <th width="30%">작성일</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <!-- CONTENTS !-->
-    <tr scope="row" th:each="board : ${boardList}">
-        <td>
-            <span th:text="${board.id}"></span>
-        </td>
-        <td>
-        <a class="text-decoration-none" th:href="@{'/post/' + ${board.id}}">
-                <span th:text="${board.title}"></span>
-            </a>
-        </td>
-        <td>
-            <span th:text="${board.writer}"></span>
-        </td>
-        <td>
-            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        <tbody>
+        <!-- CONTENTS !-->
+        <tr scope="row" th:each="board : ${boardList}">
+            <td>
+                <span th:text="${board.id}"></span>
+            </td>
+            <td>
+            <a class="text-decoration-none" th:href="@{'/post/' + ${board.id}}">
+                    <span th:text="${board.title}"></span>
+                </a>
+            </td>
+            <td>
+                <span th:text="${board.writer}"></span>
+            </td>
+            <td>
+                <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<!-- 페이징 영역 -->
-<div class="text-center">
+    <!-- 페이징 영역 -->
     <div class="text-center">
-        <span th:each="pageNum : ${pageList}" th:inline="text">
-            <a class="text-decoration-none" th:href="@{'/?page=' + ${pageNum}}">[[${pageNum}]]</a>
-        </span>
+        <div class="text-center">
+            <span th:each="pageNum : ${pageList}" th:inline="text">
+                <a class="text-decoration-none" th:href="@{'/?page=' + ${pageNum}}">[[${pageNum}]]</a>
+            </span>
+        </div>
     </div>
-</div>
 
-<!-- FOOTER -->
-<div th:insert="common/footer.html" id="footer"></div>
+    <!-- FOOTER -->
+    <div th:insert="common/footer.html" id="footer"></div>
 </body>
 </html>

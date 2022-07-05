@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -19,8 +20,10 @@ public class UserService {
     }
 
     @Transactional
-    public Long userJoin(UserDto userDto) {
-        return userRepository.save(userDto.toEntity()).getUserNum();
+    public int userJoin(UserDto userDto) {
+        int result = userRepository.userJoin(userDto);
+        //return userRepository.save(userDto.toEntity()).getUserNum();
+        return result;
     }
 
     //@Transactional

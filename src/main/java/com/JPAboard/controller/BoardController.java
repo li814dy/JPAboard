@@ -39,8 +39,8 @@ public class BoardController {
     
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
-        BoardDto boardDTO = boardService.getPost(no);
-        model.addAttribute("boardDto", boardDTO);
+        BoardDto boardDtO = boardService.getPost(no);
+        model.addAttribute("boardDto", boardDtO);
 
         return "board/detail.html";
     }

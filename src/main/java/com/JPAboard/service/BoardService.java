@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @AllArgsConstructor
+@Service
 public class BoardService {
     private BoardRepository boardRepository;
 

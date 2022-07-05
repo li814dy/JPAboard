@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
 @AllArgsConstructor
+@Controller
 public class BoardController {
     private BoardService boardService;
 
@@ -23,6 +23,18 @@ public class BoardController {
         model.addAttribute("pageList", pageList);           // 게시글 페이징
 
         return "board/list.html";
+    }
+
+    @GetMapping("/post")
+    public String write() {
+        return "board/write.html";
+    }
+
+    @PostMapping("/post")
+    public String write(BoardDto boardDto) {
+        boardService.savePost(boardDto);
+
+        return "redirect:/";
     }
     
     @GetMapping("/post/{no}")
@@ -51,18 +63,6 @@ public class BoardController {
     @DeleteMapping("/post/{no}")
     public String delete(@PathVariable("no") Long no) {
         boardService.deletePost(no);
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/post")
-    public String write() {
-        return "board/write.html";
-    }
-
-    @PostMapping("/post")
-    public String write(BoardDto boardDto) {
-        boardService.savePost(boardDto);
 
         return "redirect:/";
     }

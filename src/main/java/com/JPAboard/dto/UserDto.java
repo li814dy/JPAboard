@@ -1,6 +1,5 @@
 package com.JPAboard.dto;
 
-import com.JPAboard.domain.entity.BoardEntity;
 import com.JPAboard.domain.entity.UserEntity;
 import lombok.*;
 

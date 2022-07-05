@@ -1,6 +1,7 @@
 package com.JPAboard.controller;
 
 import com.JPAboard.domain.entity.UserEntity;
+import com.JPAboard.dto.UserDto;
 import com.JPAboard.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
 @AllArgsConstructor
+@Controller
 public class UserController {
     private UserService userService;
 
     // 로그인 페이지 연결
     @GetMapping("/user/login")
-    public void userLogin() {}
+    public String userLogin() {
+        return "user/login.html";
+    }
 
     // 로그인 실행
     @PostMapping("/user/login")
@@ -51,8 +54,8 @@ public class UserController {
 
     // 회원가입 실행
     @PostMapping("/user/join")
-    public String userJoin(UserEntity userEntity) {
-        userService.userJoin(userEntity);
+    public String userJoin(UserDto userDto) {
+        userService.userJoin(userDto);
 
         return "user/login.html";
     }

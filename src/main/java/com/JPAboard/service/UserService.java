@@ -14,8 +14,8 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public UserEntity userLogin(UserEntity userEntity) {
-        return userRepository.userLogin(userEntity);
+    public UserDto userLogin(UserDto userDto) {
+        return userRepository.userLogin(userDto);
     }
 
     @Transactional

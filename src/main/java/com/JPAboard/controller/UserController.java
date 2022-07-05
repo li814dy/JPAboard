@@ -26,10 +26,10 @@ public class UserController {
 
     // 로그인 실행
     @PostMapping("/user/login")
-    public String userLogin(UserEntity userEntity, HttpSession session) {
-        userEntity = userService.userLogin(userEntity);
-        if(userEntity != null) {
-            session.setAttribute("user", userEntity);
+    public String userLogin(UserDto userDto, HttpSession session) {
+        userDto = userService.userLogin(userDto);
+        if(userDto != null) {
+            session.setAttribute("user", userDto);
         }
         return "redirect:/";
     }

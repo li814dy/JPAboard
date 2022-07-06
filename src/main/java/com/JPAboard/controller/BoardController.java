@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
 @AllArgsConstructor
+@Controller
 public class BoardController {
     private BoardService boardService;
 
@@ -19,26 +19,37 @@ public class BoardController {
     public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
         List<BoardDto> boardList = boardService.getBoardlist(pageNum);
         Integer[] pageList = boardService.getPageList(pageNum);
-
         model.addAttribute("boardList", boardList);         // 게시글 목록 출력
         model.addAttribute("pageList", pageList);           // 게시글 페이징
 
         return "board/list.html";
     }
+
+    @GetMapping("/post")
+    public String write() {
+        return "board/write.html";
+    }
+
+    @PostMapping("/post")
+    public String write(BoardDto boardDto) {
+        boardService.savePost(boardDto);
+
+        return "redirect:/";
+    }
     
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
-        BoardDto boardDTO = boardService.getPost(no);
+        BoardDto boardDtO = boardService.getPost(no);
+        model.addAttribute("boardDto", boardDtO);
 
-        model.addAttribute("boardDto", boardDTO);
         return "board/detail.html";
     }
 
     @GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardDto boardDTO = boardService.getPost(no);
-
         model.addAttribute("boardDto", boardDTO);
+
         return "board/update.html";
     }
 
@@ -56,23 +67,10 @@ public class BoardController {
         return "redirect:/";
     }
 
-    @GetMapping("/post")
-    public String write() {
-        return "board/write.html";
-    }
-
-    @PostMapping("/post")
-    public String write(BoardDto boardDto) {
-        boardService.savePost(boardDto);
-
-        return "redirect:/";
-    }
-
     // 글제목 기준 검색 설정
     @GetMapping("/board/search")
     public String search(@RequestParam(value="keyword") String keyword, Model model) {
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
-
         model.addAttribute("boardList", boardDtoList);
 
         return "board/list.html";

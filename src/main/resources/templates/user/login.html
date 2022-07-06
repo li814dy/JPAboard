@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>JPAboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="sticky-top bg-white" th:insert="common/header.html" id="header"></header>
+
+    <div class="mx-3 my-5">
+        <form action="/user/login" method="post">
+            <div class="mb-3">
+                <div class="row m-3">
+                    <div class="col-4"></div>
+                    <label class="col-1 col-form-label" for="userId">ID : </label>
+                    <div class="col-3">
+                        <input class="form-control" type="text" id="userId" name="userId" required>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row m-3">
+                    <div class="col-4"></div>
+                    <label class="col-1 col-form-label" for="userPw">Password : </label>
+                    <div class="col-3">
+                        <input class="form-control" type="text" id="userPw" name="userPw" required>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row m-3">
+                    <div class="col-4"></div>
+                    <input class="col-4 btn btn-primary" type="submit" value="login">
+                    <div class="col-4"></div>
+                </div>
+                <div class="row m-3">
+                    <div class="col-4"></div>
+                    <div class="col-3 text-end">Did you forget your password?</div>
+                    <a class="col-1 text-decoration-none text-end" th:href="@{/user/findPW}">Find PW</a>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row m-3">
+                    <div class="col-4"></div>
+                    <div class="col-3 text-end">What if you don't have an account?</div>
+                    <a class="col-1 text-decoration-none text-end" th:href="@{/user/join}">Sign up</a>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+        </form>
+
+        <!-- FOOTER -->
+        <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
+    </div>
+
+    <!-- script -->
+    <script th:inline="javascript" th:src="@{/js/user.js}"></script>
+</body>
+</html>

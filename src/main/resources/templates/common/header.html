@@ -5,11 +5,16 @@
         </div>
         <div class="col"></div>
         <div class="col text-end">
-            <a class="btn btn-sm btn-primary" th:href="@{/user/login}" th:if="${session.SID eq null}">로그인</a>
-            <th:block th:unless="${session.SID eq null}">
+            <th:block th:if="${session.user eq null}">
                 <div class="row">
-                    <label class="col-8 text-end">[[${session.userName}]] 님</label>
-                    <a class="col-4 btn btn-sm btn-primary" th:href="@{/user/logout}">로그아웃</a>
+                    <div class="col-10"></div>
+                    <a class="col-2 btn btn-sm btn-primary" th:href="@{/user/login}">로그인</a>
+                </div>
+            </th:block>
+            <th:block th:unless="${session.user eq null}">
+                <div class="row">
+                    <label class="col-10 text-end">[[${session.userName}]] 님</label>
+                    <a class="col-2 btn btn-sm btn-primary" th:href="@{/user/logout}">로그아웃</a>
                 </div>
             </th:block>
         </div>

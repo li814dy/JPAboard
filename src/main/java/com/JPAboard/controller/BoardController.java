@@ -22,7 +22,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);         // 게시글 목록 출력
         model.addAttribute("pageList", pageList);           // 게시글 페이징
 
-        return "board/list.html";
+        return "board/list";
     }
 
     @GetMapping("/post")
@@ -39,10 +39,10 @@ public class BoardController {
     
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
-        BoardDto boardDtO = boardService.getPost(no);
-        model.addAttribute("boardDto", boardDtO);
+        BoardDto boardDto = boardService.getPost(no);
+        model.addAttribute("boardDto", boardDto);
 
-        return "board/detail.html";
+        return "board/detail";
     }
 
     @GetMapping("/post/edit/{no}")
@@ -50,7 +50,7 @@ public class BoardController {
         BoardDto boardDTO = boardService.getPost(no);
         model.addAttribute("boardDto", boardDTO);
 
-        return "board/update.html";
+        return "board/update";
     }
 
     @PutMapping("/post/edit/{no}")
@@ -73,6 +73,6 @@ public class BoardController {
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
         model.addAttribute("boardList", boardDtoList);
 
-        return "board/list.html";
+        return "board/list";
     }
 }

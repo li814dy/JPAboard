@@ -1,7 +1,9 @@
 package com.JPAboard.service;
 
+import com.JPAboard.domain.entity.BoardEntity;
 import com.JPAboard.domain.entity.UserEntity;
 import com.JPAboard.domain.repository.UserRepository;
+import com.JPAboard.dto.BoardDto;
 import com.JPAboard.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,19 +17,19 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public UserDto userLogin(UserDto userDto) {
-        return userRepository.userLogin(userDto);
+    public Long userJoin(UserDto userDto) {
+        return userRepository.save(userDto.toEntity()).getUserNum();
     }
 
     @Transactional
-    public int userJoin(UserDto userDto) {
-        int result = userRepository.userJoin(userDto);
-        //return userRepository.save(userDto.toEntity()).getUserNum();
-        return result;
+    public UserEntity userLogin(String uid, String upw) {
+        UserEntity userEntity = userRepository.selectUserInfo(uid, upw);
+
+        return userEntity;
     }
 
-    //@Transactional
-    //public void userDelete(Long id) {
-    //    userRepository.deleteById(id);
-    //}
+/*    @Transactional
+    public void userDelete(Long id) {
+        userRepository.deleteById(id);
+    }*/
 }

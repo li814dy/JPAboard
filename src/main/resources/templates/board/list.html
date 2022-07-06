@@ -15,13 +15,13 @@
         <!-- 검색 form -->
         <form class="mb-3 p-2 rounded bg-light" action="/board/search" method="GET">
             <div class="row">
-                <div class="col">
-                    <a class="btn btn-primary" th:href="@{/post}">글쓰기</a>
-                </div>
-                <div class="col"></div>
-                <div class="col input-group text-end">
+                <div class="col input-group">
                     <input class="form-control" name="keyword" type="text" placeholder="검색어를 입력해주세요">
                     <button class="btn btn-secondary">검색하기</button>
+                </div>
+                <div class="col"></div>
+                <div class="col text-end">
+                    <a class="btn btn-primary" th:href="@{/post}">글쓰기</a>
                 </div>
             </div>
         </form>

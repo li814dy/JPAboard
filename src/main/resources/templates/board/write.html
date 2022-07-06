@@ -22,8 +22,11 @@
                 <div class="col">
                     <div class="row">
                         <label class="col-2 col-form-label" for="writer">작성자 : </label>
-                        <div class="col-10">
+                        <div class="col-10" th:if="${session.user eq null}">
                             <input class="form-control" type="text" id="writer" name="writer">
+                        </div>
+                        <div class="col-10" th:unless="${session.user eq null}">
+                            <input class="form-control" type="text" id="writer" name="writer" th:value="${session.userName}" readonly>
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @AllArgsConstructor
@@ -61,10 +63,10 @@ public class UserController {
     // 로그아웃 실행
     @PostMapping("/user/logout")
     public String userLogout(Model model, HttpSession session) {
-        session.setAttribute("user", null);
-        session.setAttribute("userName", null);
-        session.invalidate();
         model.addAttribute("userData", null);
+        session.removeAttribute("user");
+        session.removeAttribute("userName");
+        session.invalidate();
 
         return "redirect:/";
     }

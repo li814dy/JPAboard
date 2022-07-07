@@ -28,6 +28,13 @@ public class UserService {
         return userEntity;
     }
 
+    @Transactional
+    public UserEntity findPW(String uname, String uid) {
+        UserEntity userEntity = userRepository.findUserPw(uname, uid);
+
+        return userEntity;
+    }
+
 /*    @Transactional
     public void userDelete(Long id) {
         userRepository.deleteById(id);

@@ -50,7 +50,28 @@ public class UserController {
         } else {
             model.addAttribute("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
 
-            return "redirect:/";
+            return "user/login";
+        }
+    }
+
+    // 비밀번호 찾기 페이지 연결
+    @GetMapping("/user/findpw")
+    public String findPW() {
+        return "user/findpw";
+    }
+
+    // 비밀번호 찾기 실행
+    @PostMapping("/user/findpw")
+    public String findPW(UserEntity userEntity, Model model) {
+        UserEntity getuserPw = userService.findPW(userEntity.getUserName(), userEntity.getUserId());
+        if(getuserPw != null) {
+            model.addAttribute("userPw", getuserPw.getUserPw());
+
+            return "user/findpw";
+        } else {
+            model.addAttribute("findFail", "일치하는 유저 정보가 없습니다.");
+
+            return "user/findpw";
         }
     }
 

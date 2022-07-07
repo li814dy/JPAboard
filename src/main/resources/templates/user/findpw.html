@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>JPAboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<!-- HEADER -->
+<header class="sticky-top bg-white" th:insert="common/header.html" id="header"></header>
+
+<div class="mx-3 my-5">
+  <form action="/user/findpw" method="post">
+    <div class="mb-3">
+      <div class="row m-3">
+        <div class="col-4"></div>
+        <div class="col-4 text-center fw-bold">비밀번호 찾기를 위해 이름과 아이디를 입력해주세요.</div>
+        <div class="col-4"></div>
+      </div>
+      <div class="row m-3">
+        <div class="col-4"></div>
+        <label class="col-1 col-form-label" for="userName">Name : </label>
+        <div class="col-3">
+          <input class="form-control" type="text" id="userName" name="userName" required>
+        </div>
+        <div class="col-4"></div>
+      </div>
+      <div class="row m-3">
+        <div class="col-4"></div>
+        <label class="col-1 col-form-label" for="userId">ID : </label>
+        <div class="col-3">
+          <input class="form-control" type="text" id="userId" name="userId" required>
+        </div>
+        <div class="col-4"></div>
+      </div>
+      <div class="row m-3">
+        <div class="col-4"></div>
+        <input class="col-4 btn btn-primary" type="submit" value="findPW">
+        <div class="col-4"></div>
+      </div>
+    </div>
+
+    <div class="mb-3" th:if="${userPw ne null}">
+      <div class="text-center">비밀번호는 '[[${userPw}]]' 입니다.</div>
+    </div>
+
+  <!-- FOOTER -->
+  <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
+</div>
+</body>
+</html>

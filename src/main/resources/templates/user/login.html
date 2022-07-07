@@ -36,7 +36,7 @@
                 <div class="row m-3">
                     <div class="col-4"></div>
                     <div class="col-3 text-end">Did you forget your password?</div>
-                    <a class="col-1 text-decoration-none text-end" th:href="@{/user/findPW}">Find PW</a>
+                    <a class="col-1 text-decoration-none text-end" th:href="@{/user/findpw}">Find PW</a>
                     <div class="col-4"></div>
                 </div>
                 <div class="row m-3">
@@ -46,6 +46,15 @@
                     <div class="col-4"></div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <div class="alert alert-warning" role="alert" th:if="${loginFail ne null}">[[${loginFail}]]</div>
+                </div>
+                <div class="col-4"></div>
+            </div>
+
         </form>
 
         <!-- FOOTER -->

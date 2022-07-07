@@ -15,7 +15,7 @@
                     <div class="row">
                         <label class="col-2 col-form-label" for="title">제목 : </label>
                         <div class="col-10">
-                            <input class="form-control" type="text" id="title" name="title">
+                            <input class="form-control" type="text" id="title" name="title" required>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="row">
                         <label class="col-2 col-form-label" for="writer">작성자 : </label>
                         <div class="col-10" th:if="${session.user eq null}">
-                            <input class="form-control" type="text" id="writer" name="writer">
+                            <input class="form-control" type="text" id="writer" name="writer" placeholder="~한글 15자, ~영문 30자" maxlength="30" required>
                         </div>
                         <div class="col-10" th:unless="${session.user eq null}">
                             <input class="form-control" type="text" id="writer" name="writer" th:value="${session.userName}" readonly>

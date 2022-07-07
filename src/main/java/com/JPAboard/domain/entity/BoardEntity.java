@@ -17,10 +17,10 @@ public class BoardEntity extends TimeEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 30, nullable = false)
     private String writer;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 50, nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT", nullable = false)

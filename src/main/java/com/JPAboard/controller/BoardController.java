@@ -1,5 +1,6 @@
 package com.JPAboard.controller;
 
+import com.JPAboard.domain.entity.CommentEntity;
 import com.JPAboard.dto.BoardDTO;
 import com.JPAboard.dto.CommentDTO;
 import com.JPAboard.service.BoardService;
@@ -41,7 +42,7 @@ public class BoardController {
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardDTO boardDTO = boardService.getPost(no);
-        List<CommentDTO> comments = boardDTO.getComments();
+        List<CommentEntity> comments = boardDTO.getComments();
 
         if (comments != null && !comments.isEmpty()) {
             model.addAttribute("comments", comments);

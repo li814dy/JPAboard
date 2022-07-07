@@ -1,5 +1,6 @@
 package com.JPAboard.controller;
 
+import com.JPAboard.domain.entity.CommentEntity;
 import com.JPAboard.dto.CommentDTO;
 import com.JPAboard.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,9 @@ public class CommentController {
     }
 
     @PostMapping("/post/{no}/comments")
-    public String write(@PathVariable Long no, CommentDTO commentDTO) {
-        commentService.saveComment(no, commentDTO);
-
+    public String write(@PathVariable("no") Long no, CommentDTO commentDTO) {
+        CommentEntity commentEntity = commentDTO.builder().build().toEntity();
+        commentService.saveComment(no, commentDTO, commentEntity);
         return "board/detail";
     }
 }

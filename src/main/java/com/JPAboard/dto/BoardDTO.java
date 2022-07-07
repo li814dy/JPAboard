@@ -1,10 +1,12 @@
 package com.JPAboard.dto;
 
 import com.JPAboard.domain.entity.BoardEntity;
+import com.JPAboard.domain.entity.CommentEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -17,25 +19,23 @@ public class BoardDTO {
     private String content;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private List<CommentDTO> comments;
-    /*private List<CommentDto> comments(BoardEntity entity) {
-        return entity.getComments().stream().map(CommentDto::new).collect(Collectors.toList());
-    };*/
+    private List<CommentEntity> comments;
 
+    // DTO to Entity
     public BoardEntity toEntity(){
         BoardEntity boardEntity = BoardEntity.builder()
                 .id(id)
                 .writer(writer)
                 .title(title)
                 .content(content)
-                //.comments(comments)
-                //.comments(comments(boardEntity))
+                .comments(comments)
                 .build();
         return boardEntity;
     }
 
+    // Entity to DTO
     @Builder
-    public BoardDTO(Long id, String title, String content, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, List<CommentDTO> comments) {
+    public BoardDTO(Long id, String title, String content, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, List<CommentEntity> comments) {
         this.id = id;
         this.writer = writer;
         this.title = title;

@@ -17,6 +17,7 @@ public class UserDTO {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
+    // DTO to Entity
     public UserEntity toEntity(){
         UserEntity userEntity = UserEntity.builder()
                 .userNum(userNum)
@@ -27,6 +28,7 @@ public class UserDTO {
         return userEntity;
     }
 
+    // Entity to DTO
     @Builder
     public UserDTO(Long userNum, String userId, String userPw, String userName, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.userNum = userNum;

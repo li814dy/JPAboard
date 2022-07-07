@@ -1,5 +1,6 @@
 package com.JPAboard.domain.entity;
 
+import com.JPAboard.dto.CommentDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +30,7 @@ public class BoardEntity extends TimeEntity {
     private String content;
 
     @OneToMany(mappedBy = "boardEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @OrderBy("id asc") // 댓글 정렬
-    /*private List<CommentEntity> comments;*/
-    private List<CommentEntity> comments = new ArrayList<>();
+    private List<CommentEntity> comments;
 
     // 생성자
     @Builder
@@ -42,4 +41,6 @@ public class BoardEntity extends TimeEntity {
         this.content = content;
         this.comments = comments;
     }
+
+
 }

@@ -19,6 +19,7 @@ public class CommentDTO {
     private LocalDateTime modifiedDate;
     private BoardEntity post;
 
+    // DTO to Entity
     public CommentEntity toEntity(){
         CommentEntity commentEntity = CommentEntity.builder()
                 .id(id)
@@ -30,6 +31,7 @@ public class CommentDTO {
         return commentEntity;
     }
 
+    // Entity to DTO
     @Builder
     public CommentDTO(Long id, String writer, String password, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, BoardEntity post) {
         this.id = id;

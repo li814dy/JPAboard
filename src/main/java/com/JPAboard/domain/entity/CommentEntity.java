@@ -1,6 +1,5 @@
 package com.JPAboard.domain.entity;
 
-import com.JPAboard.dto.CommentDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

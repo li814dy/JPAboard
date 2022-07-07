@@ -11,6 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
+    @Query("SELECT u from UserEntity u where u.userId=:userId")
+    UserEntity checkUserInfo(@Param("userId")String userId);
+
     @Query("SELECT u from UserEntity u where u.userId=:userId and u.userPw=:userPw")
     UserEntity selectUserInfo(@Param("userId")String userId, @Param("userPw")String userPw);
 

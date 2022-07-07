@@ -25,10 +25,17 @@ public class UserController {
 
     // 회원가입 실행
     @PostMapping("/user/join")
-    public String userJoin(UserDto userDto) {
-        userService.userJoin(userDto);
+    public String userJoin(UserEntity userEntity, Model model, UserDto userDto) {
+        UserEntity userE = userService.userJoinCheck(userEntity.getUserId());
+        if(userE != null) {
+            model.addAttribute("joinFail", "같은 아이디를 가진 회원이 이미 존재합니다!");
 
-        return "user/login";
+            return "user/join";
+        } else {
+            userService.userJoin(userDto);
+
+            return "user/login";
+        }
     }
 
     // 로그인 페이지 연결

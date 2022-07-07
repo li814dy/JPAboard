@@ -22,6 +22,13 @@ public class UserService {
     }
 
     @Transactional
+    public UserEntity userJoinCheck(String uid) {
+        UserEntity userEntity = userRepository.checkUserInfo(uid);
+
+        return userEntity;
+    }
+
+    @Transactional
     public UserEntity userLogin(String uid, String upw) {
         UserEntity userEntity = userRepository.selectUserInfo(uid, upw);
 

@@ -2,7 +2,7 @@ package com.JPAboard.service;
 
 import com.JPAboard.domain.entity.BoardEntity;
 import com.JPAboard.domain.repository.BoardRepository;
-import com.JPAboard.dto.BoardDto;
+import com.JPAboard.dto.BoardDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,17 +23,17 @@ public class BoardService {
     private static final int PAGE_POST_COUNT = 5; // 한 페이지에 존재하는 게시글 수
 
     @Transactional
-    public List<BoardDto> getBoardlist(Integer pageNum) {
+    public List<BoardDTO> getBoardlist(Integer pageNum) {
         Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
 
         List<BoardEntity> boardEntities = page.getContent();
-        List<BoardDto> boardDtoList = new ArrayList<>();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
 
         for (BoardEntity boardEntity : boardEntities) {
-            boardDtoList.add(this.convertEntityToDto(boardEntity));
+            boardDTOList.add(this.convertEntityToDto(boardEntity));
         }
 
-        return boardDtoList;
+        return boardDTOList;
     }
 
     // 페이징 설정
@@ -68,11 +68,11 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDto getPost(Long id) {
+    public BoardDTO getPost(Long id) {
         Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
         BoardEntity boardEntity = boardEntityWrapper.get();
 
-        BoardDto boardDTO = BoardDto.builder()
+        BoardDTO boardDTO = BoardDTO.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())
                 .content(boardEntity.getContent())
@@ -84,32 +84,42 @@ public class BoardService {
     }
 
     @Transactional
-    public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+    public Long savePost(BoardDTO boardDTO) {
+        return boardRepository.save(boardDTO.toEntity()).getId();
     }
 
     @Transactional
-    public void deletePost(Long id) {
-        boardRepository.deleteById(id);
+    public void deletePost(Long no) {
+        boardRepository.deleteById(no);
     }
+    
+    /* 유저 데이터 정보 포함 게시글 삭제 구현 필요
+    @Transactional
+    public void deletePost(Long no, Long uno) {
+        boardRepository = boardRepository.findById(no);
+        if(boardRepository.belongsToUser(uno) {
+            boardRepository.deleteById(no);
+        }
+    }
+    */
 
     // 글제목 기준 검색 설정
     @Transactional
-    public List<BoardDto> searchPosts(String keyword) {
+    public List<BoardDTO> searchPosts(String keyword) {
         List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
-        List<BoardDto> boardDtoList = new ArrayList<>();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
 
-        if (boardEntities.isEmpty()) return boardDtoList;
+        if (boardEntities.isEmpty()) return boardDTOList;
 
         for (BoardEntity boardEntity : boardEntities) {
-            boardDtoList.add(this.convertEntityToDto(boardEntity));
+            boardDTOList.add(this.convertEntityToDto(boardEntity));
         }
 
-        return boardDtoList;
+        return boardDTOList;
     }
 
-    private BoardDto convertEntityToDto(BoardEntity boardEntity) {
-        return BoardDto.builder()
+    private BoardDTO convertEntityToDto(BoardEntity boardEntity) {
+        return BoardDTO.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())
                 .content(boardEntity.getContent())

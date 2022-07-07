@@ -1,0 +1,20 @@
+<form th:action="@{'/post/' + ${boardDto.id} + '/comments'}">
+    <div class="mb-3 p-2 rounded border-light">
+        <div class="row mb-3">
+            <label class="col-sm-1 col-form-label" for="writer">작성자 : </label>
+            <div class="col-sm-4">
+                <input class="form-control form-control-sm" type="text" id="writer" name="writer" placeholder="~한글 15자, ~영문 30자" maxlength="30" required>
+            </div>
+            <label class="col-sm-1 col-form-label" for="userPw">비밀번호 : </label>
+            <div class="col-sm-4">
+                <input class="form-control form-control-sm" type="password" id="userPw" name="userPw" placeholder="비밀번호" required>
+            </div>
+            <div class="col-sm-2 text-end">
+                <button class="btn btn-success" type="submit">등록</button>
+            </div>
+        </div>
+        <div class="row">
+            <textarea class="form-control" name="content" rows="3"></textarea>
+        </div>
+    </div>
+</form>

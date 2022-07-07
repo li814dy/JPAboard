@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDto {
+public class UserDTO {
     private Long userNum;
     private String userId;
     private String userPw;
@@ -28,7 +28,7 @@ public class UserDto {
     }
 
     @Builder
-    public UserDto(Long userNum, String userId, String userPw, String userName, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public UserDTO(Long userNum, String userId, String userPw, String userName, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.userNum = userNum;
         this.userId = userId;
         this.userPw = userPw;

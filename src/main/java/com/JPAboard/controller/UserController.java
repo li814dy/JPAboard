@@ -1,15 +1,13 @@
 package com.JPAboard.controller;
 
 import com.JPAboard.domain.entity.UserEntity;
-import com.JPAboard.dto.UserDto;
+import com.JPAboard.dto.UserDTO;
 import com.JPAboard.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @AllArgsConstructor
@@ -25,7 +23,7 @@ public class UserController {
 
     // 회원가입 실행
     @PostMapping("/user/join")
-    public String userJoin(UserEntity userEntity, Model model, UserDto userDto) {
+    public String userJoin(UserEntity userEntity, Model model, UserDTO userDto) {
         UserEntity userE = userService.userJoinCheck(userEntity.getUserId());
         if(userE != null) {
             model.addAttribute("joinFail", "같은 아이디를 가진 회원이 이미 존재합니다!");

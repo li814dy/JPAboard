@@ -5,11 +5,14 @@ import com.JPAboard.dto.BoardDTO;
 import com.JPAboard.dto.CommentDTO;
 import com.JPAboard.service.BoardService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Controller
@@ -27,18 +30,31 @@ public class BoardController {
         return "board/list";
     }
 
-    @GetMapping("/post")
+    @GetMapping("/post/write")
     public String write() {
         return "board/write";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/post/write")
     public String write(BoardDTO boardDTO) {
         boardService.savePost(boardDTO);
 
         return "redirect:/";
     }
     
+/*    @GetMapping("/post/{no}")
+    public String detail(@PathVariable("no") Long no, Model model) {
+        BoardDTO boardDTO = boardService.getPost(no);
+        List<CommentEntity> comments = boardDTO.getComments();
+
+        if (comments != null && !comments.isEmpty()) {
+            model.addAttribute("comments", comments);
+        }
+
+        model.addAttribute("board", boardDTO);
+
+        return "board/detail";
+    }*/
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardDTO boardDTO = boardService.getPost(no);
@@ -48,7 +64,7 @@ public class BoardController {
             model.addAttribute("comments", comments);
         }
 
-        model.addAttribute("boardDto", boardDTO);
+        model.addAttribute("board", boardDTO);
 
         return "board/detail";
     }
@@ -56,7 +72,7 @@ public class BoardController {
     @GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardDTO boardDTO = boardService.getPost(no);
-        model.addAttribute("boardDto", boardDTO);
+        model.addAttribute("board", boardDTO);
 
         return "board/update";
     }

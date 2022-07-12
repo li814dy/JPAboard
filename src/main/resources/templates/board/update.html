@@ -9,16 +9,16 @@
     <header class="sticky-top bg-white" th:insert="common/header.html" id="header"></header>
 
     <div class="mx-3 my-5">
-        <form th:action="@{'/post/edit/' + ${boardDto.id}}" method="post">
+        <form th:action="@{'/post/edit/' + ${board.id}}" method="post">
             <input type="hidden" name="_method" value="put"/>
-            <input type="hidden" name="id" th:value="${boardDto.id}"/>
+            <input type="hidden" name="id" th:value="${board.id}"/>
 
             <div class="row mb-3">
                 <div class="col">
                     <div class="row">
                         <label class="col-2 col-form-label" for="title">제목 : </label>
                         <div class="col-10">
-                            <input class="form-control" type="text" id="title" name="title" th:value="${boardDto.title}">
+                            <input class="form-control" type="text" id="title" name="title" th:value="${board.title}">
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="row">
                         <label class="col-2 col-form-label" for="writer">작성자 : </label>
                         <div class="col-10">
-                            <input class="form-control" type="text" id="writer" name="writer" th:value="${boardDto.writer}">
+                            <input class="form-control" type="text" id="writer" name="writer" th:value="${board.writer}">
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <textarea class="form-control" name="content" th:text="${boardDto.content}" rows="5"></textarea><br>
+            <textarea class="form-control" name="content" th:text="${board.content}" rows="5"></textarea><br>
         </form>
 
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>

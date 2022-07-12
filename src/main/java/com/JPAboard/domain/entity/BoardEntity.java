@@ -1,13 +1,11 @@
 package com.JPAboard.domain.entity;
 
-import com.JPAboard.dto.CommentDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,7 +27,7 @@ public class BoardEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "boardEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments;
 
     // 생성자
@@ -41,6 +39,4 @@ public class BoardEntity extends TimeEntity {
         this.content = content;
         this.comments = comments;
     }
-
-
 }

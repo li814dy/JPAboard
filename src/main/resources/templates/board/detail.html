@@ -13,10 +13,10 @@
         <form class="mb-3">
             <div class="row">
                 <div class="col">
-                    <a class="btn btn-primary" th:href="@{'/post/edit/' + ${boardDto.id}}">수정</a>
+                    <a class="btn btn-primary" th:href="@{'/post/edit/' + ${board.id}}">수정</a>
                 </div>
                 <div class="col text-end">
-                    <form id="delete-form" th:action="@{'/post/' + ${boardDto.id}}" method="post">
+                    <form id="delete-form" th:action="@{'/post/' + ${board.id}}" method="post">
                         <input type="hidden" name="_method" value="delete"/>
                         <button class="btn btn-secondary" id="delete">삭제</button>
                     </form>
@@ -26,35 +26,31 @@
 
         <div class="row">
             <div class="col">
-                <h2 th:text="${boardDto.title}"></h2>
+                <h2 th:text="${board.title}"></h2>
             </div>
             <div class="col text-end">
-                <p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
+                <p th:inline="text">작성일 : [[${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
             </div>
         </div>
 
-        <p class="mb-3 fs-5" th:text="${boardDto.content}"></p>
+        <p class="mb-3 fs-5" th:text="${board.content}"></p>
 
         <hr class="mx-5 mt-5">
 
-        <div class="mx-5 my-3" th:insert="comment/write.html" id="write_comment"></div>
+        <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comments'}" id="write_comment" method="post"></form>
         <br/>
-        <div class="mx-5 my-3" th:if="${commentDto ne null}" th:insert="comment/list.html" id="comments"></div>
+        <form class="mx-5 my-3" th:if="${board.comments ne null}" th:insert="comment/list.html" id="comments"></form>
+        <form class="mx-5 my-3" th:unless="${board.comments ne null}" id="comments"></form>
 
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
     </div>
 
-    <!-- 변수 셋팅 -->
+<!--    &lt;!&ndash; 변수 셋팅 &ndash;&gt;
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var boardDto = /*[[${boardDTO}]]*/ "";
+        var board = /*[[${board}]]*/ "";
+        var comments = /*[[${comments}]]*/ "";
         /*]]>*/
-    </script>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var commentDTO = /*[[${commentDTO}]]*/ "";
-        /*]]>*/
-    </script>
+    </script>-->
 </body>
 </html>

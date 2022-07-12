@@ -17,7 +17,7 @@ public class CommentDTO {
     private String content;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private BoardEntity post;
+    private BoardEntity board;
 
     // DTO to Entity
     public CommentEntity toEntity(){
@@ -26,20 +26,20 @@ public class CommentDTO {
                 .writer(writer)
                 .password(password)
                 .content(content)
-                .post(post)
+                .board(board)
                 .build();
         return commentEntity;
     }
 
     // Entity to DTO
     @Builder
-    public CommentDTO(Long id, String writer, String password, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, BoardEntity post) {
+    public CommentDTO(Long id, String writer, String password, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, BoardEntity board) {
         this.id = id;
         this.writer = writer;
         this.password = password;
         this.content = content;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
-        this.post = post;
+        this.board = board;
     }
 }

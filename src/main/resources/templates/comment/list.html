@@ -1,46 +1,19 @@
-<form class="mb-3 p-2 rounded border-light">
-  <table class = "table mb-3 caption-top">
-    <caption>Comments</caption>
-    <thead>
-    <tr>
-      <th width="50%"></th>
-      <th width="25%"></th>
-      <th width="25%"></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <!-- CONTENTS !-->
-    <tr scope="row" th:each="comment : ${comments}">
-      <td>
-        <span th:text="${comments.writer}"></span>
-      </td>
-      <td>
-        작성 시간:
-        <span th:text="${#temporals.format(comments.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-      </td>
-      <td>
-        수정 시간:
-        <span th:text="${#temporals.format(comments.modifiedDate, 'yyyy-MM-dd HH:mm')}"></span>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <span th:text="${comments.content}"></span>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label class="col-2 col-form-label" for="userPw">비밀번호 : </label>
-        <input class="form-control" type="password" id="userPw" name="userPw" placeholder="비밀번호" required>
-      </td>
-      <td>
-        <button>수정</button>
-      </td>
-      <td>
-        <button>삭제</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</form>
+<div class="mb-3 p-2 rounded border-light">
+  <div class="row">
+    <div class="col-6">작성자 : [[${comments.writer}]]</div>
+    <div class="col-3 text-end">작성 시간 : [[${#temporals.format(comments.createdDate, 'yyyy-MM-dd HH:mm')}]]</div>
+    <div class="col-3 text-end">수정 시간 : [[${#temporals.format(comments.modifiedDate, 'yyyy-MM-dd HH:mm')}]]</div>
+  </div>
+  <div class="row" th:text="${comments.content}"></div>
+  <div class="row">
+    <div class="col-6">
+      <label class="col-2 col-form-label" for="userPW">비밀번호 : </label>
+      <input class="form-control" type="password" id="userPW" name="password" placeholder="비밀번호" required>
+    </div>
+    <button class="col-3 btn btn-primary">수정</button>
+    <form id="delete-form" th:action="@{'/post/' + ${board.id} + 'comments' + ${comments.id}}" method="post">
+      <input type="hidden" name="_method" value="delete"/>
+      <button class="btn btn-secondary" id="delete">삭제</button>
+    </form>
+  </div>
+</div>

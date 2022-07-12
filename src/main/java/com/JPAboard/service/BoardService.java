@@ -1,8 +1,12 @@
 package com.JPAboard.service;
 
 import com.JPAboard.domain.entity.BoardEntity;
+import com.JPAboard.domain.entity.CommentEntity;
 import com.JPAboard.domain.repository.BoardRepository;
+import com.JPAboard.domain.repository.CommentRepository;
+import com.JPAboard.domain.repository.UserRepository;
 import com.JPAboard.dto.BoardDTO;
+import com.JPAboard.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,11 +17,14 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class BoardService {
     private BoardRepository boardRepository;
+    private UserRepository userRepository;
+    private CommentRepository commentRepository;
 
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 5; // 한 페이지에 존재하는 게시글 수
@@ -30,7 +37,7 @@ public class BoardService {
         List<BoardDTO> boardDTOList = new ArrayList<>();
 
         for (BoardEntity boardEntity : boardEntities) {
-            boardDTOList.add(this.convertEntityToDto(boardEntity));
+            boardDTOList.add(this.convertEntityToDTO(boardEntity));
         }
 
         return boardDTOList;
@@ -72,13 +79,7 @@ public class BoardService {
         Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
         BoardEntity boardEntity = boardEntityWrapper.get();
 
-        BoardDTO boardDTO = BoardDTO.builder()
-                .id(boardEntity.getId())
-                .title(boardEntity.getTitle())
-                .content(boardEntity.getContent())
-                .writer(boardEntity.getWriter())
-                .createdDate(boardEntity.getCreatedDate())
-                .build();
+        BoardDTO boardDTO = this.convertEntityToDTO(boardEntity);
 
         return boardDTO;
     }
@@ -91,6 +92,8 @@ public class BoardService {
     @Transactional
     public void deletePost(Long no) {
         boardRepository.deleteById(no);
+        userRepository.deleteById(no);
+        commentRepository.deleteById(no);
     }
     
     /* 유저 데이터 정보 포함 게시글 삭제 구현 필요
@@ -112,19 +115,20 @@ public class BoardService {
         if (boardEntities.isEmpty()) return boardDTOList;
 
         for (BoardEntity boardEntity : boardEntities) {
-            boardDTOList.add(this.convertEntityToDto(boardEntity));
+            boardDTOList.add(this.convertEntityToDTO(boardEntity));
         }
 
         return boardDTOList;
     }
 
-    private BoardDTO convertEntityToDto(BoardEntity boardEntity) {
+    private BoardDTO convertEntityToDTO(BoardEntity boardEntity) {
         return BoardDTO.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())
                 .content(boardEntity.getContent())
                 .writer(boardEntity.getWriter())
                 .createdDate(boardEntity.getCreatedDate())
+                .comments(boardEntity.getComments())
                 .build();
     }
 }

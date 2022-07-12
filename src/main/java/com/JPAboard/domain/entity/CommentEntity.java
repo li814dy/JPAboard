@@ -28,8 +28,8 @@ public class CommentEntity extends TimeEntity {
 
     // 게시글
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private BoardEntity post;
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
     /*
     // 작성자
@@ -39,11 +39,11 @@ public class CommentEntity extends TimeEntity {
     */
 
     @Builder
-    public CommentEntity(Long id, String writer, String password, String content, BoardEntity post) {
+    public CommentEntity(Long id, String writer, String password, String content, BoardEntity board) {
         this.id = id;
         this.writer = writer;
         this.password = password;
         this.content = content;
-        this.post = post;
+        this.board = board;
     }
 }

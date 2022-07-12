@@ -1,8 +1,6 @@
 package com.JPAboard.domain.repository;
 
 import com.JPAboard.domain.entity.BoardEntity;
-import com.JPAboard.domain.entity.UserEntity;
-import com.JPAboard.dto.BoardDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +15,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
     @Query("SELECT u from BoardEntity u where u.id=:id")
     BoardEntity findByBoardId(@Param("id")String id);
+
+    @Query("DELETE from BoardEntity where id=:id")
+    Long dropById(@Param("id")Long id);
 }

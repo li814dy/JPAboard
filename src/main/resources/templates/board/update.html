@@ -9,7 +9,7 @@
     <header class="sticky-top bg-white" th:insert="common/header.html" id="header"></header>
 
     <div class="mx-3 my-5">
-        <form th:action="@{'/post/edit/' + ${board.id}}" method="post">
+        <form th:action="@{'/post/' + ${board.id} + '/edit'}" method="post">
             <input type="hidden" name="_method" value="put"/>
             <input type="hidden" name="id" th:value="${board.id}"/>
 

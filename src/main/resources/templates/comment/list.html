@@ -6,9 +6,21 @@
         <div class="col-3 text-end">작성 시간 : [[${comment.createdDate}]]</div>
         <div class="col-3 text-end">수정 시간 : [[${comment.modifiedDate}]]</div>
       </div>
-      <div class="row my-5 mx-3" th:text="${comment.content}"></div>
+      <div class="collapse-show multi-collapse" id="multiCollapseExample1">
+        <div class="row my-5 mx-3" th:text="${comment.content}"></div>
+      </div>
+      <div class="collapse multi-collapse" id="multiCollapseExample2">
+        <div class="row my-5 mx-3">
+          <input type="hidden" name="_method" value="put"/>
+          <input type="hidden" name="id" th:value="${board.id}"/>
+          <input type="hidden" name="cid" th:value="${comment.id}"/>
+
+          <input class="form-control form-control-sm" type="text" id="comment" name="content" th:value="${comment.content}">
+          <a class="col-6 btn btn-primary" th:href="@{'/post/' + ${board.id} + '/comment/' + ${comment.id} + '/edit'}">수정</a>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-5">
+        <div class="col-6">
           <div class="row">
             <label class="col-sm-4 col-form-label" for="userPW">비밀번호 : </label>
             <div class="col-sm-8">
@@ -16,13 +28,15 @@
             </div>
           </div>
         </div>
-        <span class="col-1"></span>
-        <button class="col-2 btn btn-sm btn-primary">수정</button>
-        <span class="col-1"></span>
-        <form id="delete-form" th:action="@{'/post/' + ${board.id} + 'comments' + ${comment.id}}" method="post">
-          <input type="hidden" name="_method" value="delete"/>
-          <button class="col-2 btn btn-sm btn-secondary" id="delete">삭제</button>
-        </form>
+        <div class="col-3 text-center">
+          <button class="col-6 btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">수정</button>
+        </div>
+        <div class="col-3 text-center">
+          <form id="delete-form" th:action="@{'/post/' + ${board.id} + '/comment/' + ${comment.id}}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <button class="col-6 btn btn-secondary" id="delete">삭제</button>
+          </form>
+        </div>
       </div>
     </li>
   </ul>

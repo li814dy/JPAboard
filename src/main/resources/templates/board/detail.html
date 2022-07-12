@@ -13,7 +13,7 @@
         <form class="mb-3">
             <div class="row">
                 <div class="col">
-                    <a class="btn btn-primary" th:href="@{'/post/edit/' + ${board.id}}">수정</a>
+                    <a class="btn btn-primary" th:href="@{'/post/' + ${board.id} +'/edit'}">수정</a>
                 </div>
                 <div class="col text-end">
                     <form id="delete-form" th:action="@{'/post/' + ${board.id}}" method="post">

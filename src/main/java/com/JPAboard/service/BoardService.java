@@ -27,19 +27,6 @@ public class BoardService {
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 5; // 한 페이지에 존재하는 게시글 수
 
-    /*@Transactional
-    public List<BoardDTO> getBoardlist(Integer pageNum) {
-        Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
-
-        List<BoardEntity> boardEntities = page.getContent();
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-
-        for (BoardEntity boardEntity : boardEntities) {
-            boardDTOList.add(this.convertEntityToDTO(boardEntity));
-        }
-
-        return boardDTOList;
-    }*/
     @Transactional
     public List<BoardResponseDTO> getBoardlist(Integer pageNum) {
         Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
@@ -86,16 +73,6 @@ public class BoardService {
         return pageList;
     }
 
-    /*@Transactional
-    public BoardDTO getPost(Long id) {
-        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
-        BoardEntity boardEntity = boardEntityWrapper.get();
-
-        BoardDTO boardDTO = this.convertEntityToDTO(boardEntity);
-
-        return boardDTO;
-    }*/
-
     @Transactional
     public BoardResponseDTO getPost(Long id) {
         Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
@@ -106,10 +83,6 @@ public class BoardService {
         return boardResponseDTO;
     }
 
-    /*@Transactional
-    public Long savePost(BoardDTO boardDTO) {
-        return boardRepository.save(boardDTO.toEntity()).getId();
-    }*/
     @Transactional
     public Long savePost(BoardRequestDTO boardRequestDTO) {
         return boardRepository.save(boardRequestDTO.toEntity()).getId();
@@ -133,20 +106,6 @@ public class BoardService {
     */
 
     // 글제목 기준 검색 설정
-/*    @Transactional
-    public List<BoardDTO> searchPosts(String keyword) {
-        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-
-        if (boardEntities.isEmpty()) return boardDTOList;
-
-        for (BoardEntity boardEntity : boardEntities) {
-            boardDTOList.add(this.convertEntityToDTO(boardEntity));
-        }
-
-        return boardDTOList;
-    }*/
-
     @Transactional
     public List<BoardResponseDTO> searchPosts(String keyword) {
         List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
@@ -161,15 +120,4 @@ public class BoardService {
 
         return boardResponseDTOList;
     }
-
-    /*private BoardDTO convertEntityToDTO(BoardEntity boardEntity) {
-        return BoardDTO.builder()
-                .id(boardEntity.getId())
-                .title(boardEntity.getTitle())
-                .content(boardEntity.getContent())
-                .writer(boardEntity.getWriter())
-                .createdDate(boardEntity.getCreatedDate())
-                .comments(boardEntity.getComments())
-                .build();
-    }*/
 }

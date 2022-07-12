@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -39,7 +40,7 @@ public class CommentEntity extends TimeEntity {
     */
 
     @Builder
-    public CommentEntity(Long id, String writer, String password, String content, BoardEntity board) {
+    public CommentEntity(Long id, String writer, String password, String content, String createdDate, String modifiedDate, BoardEntity board) {
         this.id = id;
         this.writer = writer;
         this.password = password;

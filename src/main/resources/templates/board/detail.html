@@ -29,7 +29,7 @@
                 <h2 th:text="${board.title}"></h2>
             </div>
             <div class="col text-end">
-                <p th:inline="text">작성일 : [[${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
+                <p th:inline="text">작성일 : [[${board.createdDate}]]</p>
             </div>
         </div>
 
@@ -38,19 +38,9 @@
         <hr class="mx-5 mt-5">
 
         <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comments'}" id="write_comment" method="post"></form>
-        <br/>
-        <form class="mx-5 my-3" th:if="${board.comments ne null}" th:insert="comment/list.html" id="comments"></form>
-        <form class="mx-5 my-3" th:unless="${board.comments ne null}" id="comments"></form>
+        <form class="mx-5 my-3" th:if="${commentList ne null}" th:insert="comment/list.html" id="comments"></form>
 
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
     </div>
-
-<!--    &lt;!&ndash; 변수 셋팅 &ndash;&gt;
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var board = /*[[${board}]]*/ "";
-        var comments = /*[[${comments}]]*/ "";
-        /*]]>*/
-    </script>-->
 </body>
 </html>

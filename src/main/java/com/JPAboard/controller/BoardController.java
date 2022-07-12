@@ -1,12 +1,10 @@
 package com.JPAboard.controller;
 
-import com.JPAboard.domain.entity.CommentEntity;
-import com.JPAboard.dto.BoardDTO;
-import com.JPAboard.dto.CommentDTO;
+import com.JPAboard.dto.*;
 import com.JPAboard.service.BoardService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +16,21 @@ import java.util.stream.Collectors;
 @Controller
 public class BoardController {
     private BoardService boardService;
+    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
     // 게시글 목록
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
         List<BoardDTO> boardList = boardService.getBoardlist(pageNum);
+        Integer[] pageList = boardService.getPageList(pageNum);
+        model.addAttribute("boardList", boardList);         // 게시글 목록 출력
+        model.addAttribute("pageList", pageList);           // 게시글 페이징
+
+        return "board/list";
+    }*/
+    @GetMapping("/")
+    public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+        List<BoardResponseDTO> boardList = boardService.getBoardlist(pageNum);
         Integer[] pageList = boardService.getPageList(pageNum);
         model.addAttribute("boardList", boardList);         // 게시글 목록 출력
         model.addAttribute("pageList", pageList);           // 게시글 페이징
@@ -35,14 +43,20 @@ public class BoardController {
         return "board/write";
     }
 
-    @PostMapping("/post/write")
+    /*@PostMapping("/post/write")
     public String write(BoardDTO boardDTO) {
         boardService.savePost(boardDTO);
 
         return "redirect:/";
+    }*/
+    @PostMapping("/post/write")
+    public String write(BoardRequestDTO boardRequestDTO) {
+        boardService.savePost(boardRequestDTO);
+
+        return "redirect:/";
     }
-    
-/*    @GetMapping("/post/{no}")
+
+    /*@GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardDTO boardDTO = boardService.getPost(no);
         List<CommentEntity> comments = boardDTO.getComments();
@@ -55,31 +69,49 @@ public class BoardController {
 
         return "board/detail";
     }*/
+
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
-        BoardDTO boardDTO = boardService.getPost(no);
-        List<CommentEntity> comments = boardDTO.getComments();
+        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        List<CommentResponseDTO> comments = boardResponseDTO.getComments();
 
         if (comments != null && !comments.isEmpty()) {
-            model.addAttribute("comments", comments);
+            model.addAttribute("commentList", comments);
+            log.debug("check object = {}", comments);
+            log.debug("check model save = {}", model.getAttribute("commentList"));
+            log.info("object info = {}", comments);
+            log.info("model save info = {}", model.getAttribute("commentList"));
         }
 
-        model.addAttribute("board", boardDTO);
+        log.debug("check fail object = {}", comments);
+        log.debug("check model save fail = {}", model.getAttribute("commentList"));
+        log.info("object info fail = {}", comments);
+        log.info("model save fail info = {}", model.getAttribute("commentList"));
+
+        model.addAttribute("board", boardResponseDTO);
 
         return "board/detail";
     }
 
-    @GetMapping("/post/edit/{no}")
+    /*@GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardDTO boardDTO = boardService.getPost(no);
         model.addAttribute("board", boardDTO);
 
         return "board/update";
+    }*/
+
+    @GetMapping("/post/edit/{no}")
+    public String edit(@PathVariable("no") Long no, Model model) {
+        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        model.addAttribute("board", boardResponseDTO);
+
+        return "board/update";
     }
 
     @PutMapping("/post/edit/{no}")
-    public String update(BoardDTO boardDTO) {
-        boardService.savePost(boardDTO);
+    public String update(BoardRequestDTO boardRequestDTO) {
+        boardService.savePost(boardRequestDTO);
 
         return "redirect:/";
     }
@@ -93,9 +125,16 @@ public class BoardController {
     }
 
     // 글제목 기준 검색 설정
-    @GetMapping("/board/search")
+/*    @GetMapping("/board/search")
     public String search(@RequestParam(value="keyword") String keyword, Model model) {
         List<BoardDTO> boardDTOList = boardService.searchPosts(keyword);
+        model.addAttribute("boardList", boardDTOList);
+
+        return "board/list";
+    }*/
+    @GetMapping("/board/search")
+    public String search(@RequestParam(value="keyword") String keyword, Model model) {
+        List<BoardResponseDTO> boardDTOList = boardService.searchPosts(keyword);
         model.addAttribute("boardList", boardDTOList);
 
         return "board/list";

@@ -15,7 +15,4 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
     @Query("SELECT u from BoardEntity u where u.id=:id")
     BoardEntity findByBoardId(@Param("id")String id);
-
-    @Query("DELETE from BoardEntity where id=:id")
-    Long dropById(@Param("id")Long id);
 }

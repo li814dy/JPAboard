@@ -1,12 +1,11 @@
 package com.JPAboard.service;
 
 import com.JPAboard.domain.entity.BoardEntity;
-import com.JPAboard.domain.entity.CommentEntity;
 import com.JPAboard.domain.repository.BoardRepository;
 import com.JPAboard.domain.repository.CommentRepository;
 import com.JPAboard.domain.repository.UserRepository;
-import com.JPAboard.dto.BoardDTO;
-import com.JPAboard.dto.CommentDTO;
+import com.JPAboard.dto.BoardRequestDTO;
+import com.JPAboard.dto.BoardResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +16,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -29,7 +27,7 @@ public class BoardService {
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 5; // 한 페이지에 존재하는 게시글 수
 
-    @Transactional
+    /*@Transactional
     public List<BoardDTO> getBoardlist(Integer pageNum) {
         Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
 
@@ -41,6 +39,20 @@ public class BoardService {
         }
 
         return boardDTOList;
+    }*/
+    @Transactional
+    public List<BoardResponseDTO> getBoardlist(Integer pageNum) {
+        Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
+
+        List<BoardEntity> boardEntities = page.getContent();
+        List<BoardResponseDTO> boardResponseDTOList = new ArrayList<>();
+
+        for (BoardEntity boardEntity : boardEntities) {
+            BoardResponseDTO boardResponseDTO = new BoardResponseDTO(boardEntity);
+            boardResponseDTOList.add(boardResponseDTO);
+        }
+
+        return boardResponseDTOList;
     }
 
     // 페이징 설정
@@ -74,7 +86,7 @@ public class BoardService {
         return pageList;
     }
 
-    @Transactional
+    /*@Transactional
     public BoardDTO getPost(Long id) {
         Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
         BoardEntity boardEntity = boardEntityWrapper.get();
@@ -82,11 +94,25 @@ public class BoardService {
         BoardDTO boardDTO = this.convertEntityToDTO(boardEntity);
 
         return boardDTO;
-    }
+    }*/
 
     @Transactional
+    public BoardResponseDTO getPost(Long id) {
+        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
+        BoardEntity boardEntity = boardEntityWrapper.get();
+
+        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(boardEntity);
+
+        return boardResponseDTO;
+    }
+
+    /*@Transactional
     public Long savePost(BoardDTO boardDTO) {
         return boardRepository.save(boardDTO.toEntity()).getId();
+    }*/
+    @Transactional
+    public Long savePost(BoardRequestDTO boardRequestDTO) {
+        return boardRepository.save(boardRequestDTO.toEntity()).getId();
     }
 
     @Transactional
@@ -107,7 +133,7 @@ public class BoardService {
     */
 
     // 글제목 기준 검색 설정
-    @Transactional
+/*    @Transactional
     public List<BoardDTO> searchPosts(String keyword) {
         List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -119,9 +145,24 @@ public class BoardService {
         }
 
         return boardDTOList;
+    }*/
+
+    @Transactional
+    public List<BoardResponseDTO> searchPosts(String keyword) {
+        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
+        List<BoardResponseDTO> boardResponseDTOList = new ArrayList<>();
+
+        if (boardEntities.isEmpty()) return boardResponseDTOList;
+
+        for (BoardEntity boardEntity : boardEntities) {
+            BoardResponseDTO boardResponseDTO = new BoardResponseDTO(boardEntity);
+            boardResponseDTOList.add(boardResponseDTO);
+        }
+
+        return boardResponseDTOList;
     }
 
-    private BoardDTO convertEntityToDTO(BoardEntity boardEntity) {
+    /*private BoardDTO convertEntityToDTO(BoardEntity boardEntity) {
         return BoardDTO.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())
@@ -130,5 +171,5 @@ public class BoardService {
                 .createdDate(boardEntity.getCreatedDate())
                 .comments(boardEntity.getComments())
                 .build();
-    }
+    }*/
 }

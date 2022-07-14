@@ -3,17 +3,24 @@ package com.JPAboard.controller;
 import com.JPAboard.dto.*;
 import com.JPAboard.service.BoardService;
 import com.JPAboard.service.FileService;
-import com.JPAboard.util.MD5Generator;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @AllArgsConstructor
@@ -38,9 +45,49 @@ public class BoardController {
         return "board/write";
     }
 
-    @PostMapping("/post/write")
+/*    @PostMapping("/post/write")
     public String write(BoardRequestDTO boardRequestDTO) {
         boardService.savePost(boardRequestDTO);
+
+        return "redirect:/";
+    }*/
+
+    @PostMapping("/post/write")
+    public String write(@RequestParam(value = "file", required = false) MultipartFile multipartFile, BoardRequestDTO boardRequestDTO, Model model) {
+        if(!multipartFile.isEmpty()) {
+            try {
+                String fileName = multipartFile.getOriginalFilename();
+                String fileType = StringUtils.getFilenameExtension(fileName);
+                String fileSize = Long.toString(multipartFile.getSize());
+
+                String makePath = System.getProperty("user.dir") + "\\files";
+
+                if (!ObjectUtils.isEmpty(fileType)) {
+                    if (!new File(makePath).exists()) {
+                        try {
+                            new File(makePath).mkdir();
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                        }
+                    }
+                }
+
+                String filePath = makePath + "\\" + fileName;
+                multipartFile.transferTo(new File(filePath));
+
+                FileRequestDTO fileRequestDTO = new FileRequestDTO();
+                fileRequestDTO.setFileName(fileName);
+                fileRequestDTO.setFilePath(filePath);
+                fileRequestDTO.setFileType(fileType);
+                fileRequestDTO.setFileSize(fileSize);
+
+                Long fileId = fileService.saveFile(fileRequestDTO);
+                boardRequestDTO.setFileId(fileId);
+                boardService.savePost(boardRequestDTO);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         return "redirect:/";
     }
@@ -48,12 +95,14 @@ public class BoardController {
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        FileResponseDTO fileResponseDTO = fileService.getFile(boardResponseDTO.getFileId());
         List<CommentResponseDTO> comments = boardResponseDTO.getComments();
 
         if (comments != null && !comments.isEmpty()) {
             model.addAttribute("commentList", comments);
         }
         model.addAttribute("board", boardResponseDTO);
+        model.addAttribute("file", fileResponseDTO);
 
         return "board/detail";
     }
@@ -88,5 +137,15 @@ public class BoardController {
         model.addAttribute("boardList", boardDTOList);
 
         return "board/list";
+    }
+
+    // 파일 다운로드 설정
+    @GetMapping("/post/{id}/{fileId}")
+    public ResponseEntity<Resource> fileDownload(@PathVariable("id") Long id, @PathVariable("fileId") Long fileId) throws IOException {
+        FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
+        Path path = Paths.get(fileResponseDTO.getFilePath());
+        Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResponseDTO.getFileName() + "\"").body(resource);
     }
 }

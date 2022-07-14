@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @Table(name = "board")
 public class BoardEntity extends TimeEntity {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -27,16 +26,20 @@ public class BoardEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @Column
+    private Long fileId;
+
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments;
 
     // 생성자
     @Builder
-    public BoardEntity(Long id, String title, String content, String writer, List<CommentEntity> comments) {
+    public BoardEntity(Long id, String title, String content, String writer, Long fileId, List<CommentEntity> comments) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
+        this.fileId = fileId;
         this.comments = comments;
     }
 }

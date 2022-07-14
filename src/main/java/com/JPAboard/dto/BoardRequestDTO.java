@@ -15,8 +15,7 @@ public class BoardRequestDTO {
     private String writer;
     private String title;
     private String content;
-    private String createdDate;
-    private String modifiedDate;
+    private Long fileId;
     private List<CommentEntity> comments;
 
     // DTO to Entity
@@ -26,6 +25,7 @@ public class BoardRequestDTO {
                 .writer(writer)
                 .title(title)
                 .content(content)
+                .fileId(fileId)
                 .comments(comments)
                 .build();
         return boardEntity;

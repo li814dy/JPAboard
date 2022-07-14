@@ -1,43 +1,66 @@
 <div class="mb-3 rounded border-light">
   <ul class="list-group">
     <li class="list-group-item m-3 py-3 px-5" th:each="comment : ${commentList}">
-      <div class="row">
-        <div class="col-6">작성자 : [[${comment.writer}]]</div>
+      <div class="row my-1">
+        <div class="col-2">작성자 : [[${comment.writer}]]</div>
         <div class="col-3 text-end">작성 시간 : [[${comment.createdDate}]]</div>
         <div class="col-3 text-end">수정 시간 : [[${comment.modifiedDate}]]</div>
+        <div class="col-2 text-end">
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="CommentEdit1 CommentEdit2">편집</button>
+        </div>
+        <div class="col-2 text-end">
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#CommentDelete" aria-expanded="false" aria-controls="CommentDelete">삭제</button>
+        </div>
       </div>
-      <div class="collapse-show multi-collapse" id="multiCollapseExample1">
+      <div class="collapse" id="CommentDelete">
+        <div class="row my-3">
+          <div class="col-9">
+            <div class="row">
+              <label class="col-sm-4 col-form-label" for="userPWDelete">비밀번호 : </label>
+              <div class="col-sm-8">
+                <input class="form-control form-control-sm" type="password" id="userPWDelete" name="password" placeholder="비밀번호" required>
+              </div>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            <form id="delete-form" th:action="@{'/post/' + ${board.id} + '/comment/' + ${comment.id}}" method="post">
+              <input type="hidden" name="_method" value="delete"/>
+              <button class="col-6 btn btn-secondary" id="deleteComment">삭제 확인</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="collapse show multi-collapse" id="CommentEdit1">
         <div class="row my-5 mx-3" th:text="${comment.content}"></div>
       </div>
-      <div class="collapse multi-collapse" id="multiCollapseExample2">
-        <div class="row my-5 mx-3">
+      <div class="collapse multi-collapse" id="CommentEdit2">
+        <form class="my-5" th:action="@{'/post/' + ${board.id} + '/comment/' + ${comment.id} + '/edit'}" method="post">
           <input type="hidden" name="_method" value="put"/>
           <input type="hidden" name="id" th:value="${board.id}"/>
           <input type="hidden" name="cid" th:value="${comment.id}"/>
+          <input type="hidden" name="writer" th:value="${comment.writer}"/>
 
-          <input class="form-control form-control-sm" type="text" id="comment" name="content" th:value="${comment.content}">
-          <a class="col-6 btn btn-primary" th:href="@{'/post/' + ${board.id} + '/comment/' + ${comment.id} + '/edit'}">수정</a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="row">
-            <label class="col-sm-4 col-form-label" for="userPW">비밀번호 : </label>
-            <div class="col-sm-8">
-              <input class="form-control form-control-sm" type="password" id="userPW" name="password" placeholder="비밀번호" required>
+          <div class="row my-3 mx-3">
+            <input class="form-control form-control-sm" type="text" id="comment" name="content" th:value="${comment.content}">
+          </div>
+
+          <div class="row my-3 mx-3">
+            <div class="col-9">
+              <div class="row">
+                <label class="col-sm-4 col-form-label" for="userPWUpdate">비밀번호 : </label>
+                <div class="col-sm-8">
+                  <input class="form-control form-control-sm" type="password" id="userPWUpdate" name="password" placeholder="비밀번호" required="">
+                </div>
+              </div>
+            </div>
+            <div class="col-3 text-center">
+              <input class="col-6 btn btn-primary" type="submit" value="수정">
             </div>
           </div>
-        </div>
-        <div class="col-3 text-center">
-          <button class="col-6 btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">수정</button>
-        </div>
-        <div class="col-3 text-center">
-          <form id="delete-form" th:action="@{'/post/' + ${board.id} + '/comment/' + ${comment.id}}" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-            <button class="col-6 btn btn-secondary" id="delete">삭제</button>
-          </form>
-        </div>
+        </form>
       </div>
+
     </li>
   </ul>
 </div>

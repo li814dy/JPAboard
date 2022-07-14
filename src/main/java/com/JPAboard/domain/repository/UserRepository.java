@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
     @Query("SELECT u from UserEntity u where u.userId=:userId")
@@ -16,4 +18,13 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     @Query("SELECT u from UserEntity u where u.userName=:userName and u.userId=:userId")
     UserEntity findUserPw(@Param("userName")String userName, @Param("userId")String userId);
+
+/*    @Query("SELECT u from UserEntity u where u.userId=:userId")
+    Optional<UserEntity> checkUserInfo(@Param("userId")String userId);
+
+    @Query("SELECT u from UserEntity u where u.userId=:userId and u.userPw=:userPw")
+    Optional<UserEntity> selectUserInfo(@Param("userId")String userId, @Param("userPw")String userPw);
+
+    @Query("SELECT u from UserEntity u where u.userName=:userName and u.userId=:userId")
+    Optional<UserEntity> findUserPw(@Param("userName")String userName, @Param("userId")String userId);*/
 }

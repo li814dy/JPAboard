@@ -14,28 +14,16 @@ public class UserResponseDTO {
     private String userId;
     private String userPw;
     private String userName;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-
-    // DTO to Entity
-    public UserEntity toEntity(){
-        UserEntity userEntity = UserEntity.builder()
-                .userNum(userNum)
-                .userId(userId)
-                .userPw(userPw)
-                .userName(userName)
-                .build();
-        return userEntity;
-    }
-
+    private String createdDate;
+    private String modifiedDate;
     // Entity to DTO
     @Builder
-    public UserResponseDTO(Long userNum, String userId, String userPw, String userName, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.userNum = userNum;
-        this.userId = userId;
-        this.userPw = userPw;
-        this.userName = userName;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
+    public UserResponseDTO(UserEntity userEntity) {
+        this.userNum = userEntity.getUserNum();
+        this.userId = userEntity.getUserId();
+        this.userPw = userEntity.getUserPw();
+        this.userName = userEntity.getUserName();
+        this.createdDate = userEntity.getCreatedDate();
+        this.modifiedDate = userEntity.getModifiedDate();
     }
 }

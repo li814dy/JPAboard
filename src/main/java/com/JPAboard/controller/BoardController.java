@@ -2,20 +2,25 @@ package com.JPAboard.controller;
 
 import com.JPAboard.dto.*;
 import com.JPAboard.service.BoardService;
+import com.JPAboard.service.FileService;
+import com.JPAboard.util.MD5Generator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @AllArgsConstructor
 @Controller
 public class BoardController {
     private BoardService boardService;
-    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
+    private FileService fileService;
 
     // 게시글 목록
     @GetMapping("/")

@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <header class="sticky-top bg-white" th:insert="common/header.html" id="header"></header>
 
     <div class="mx-3 my-5">
@@ -18,7 +19,7 @@
                 <div class="col text-end">
                     <form id="delete-form" th:action="@{'/post/' + ${board.id}}" method="post">
                         <input type="hidden" name="_method" value="delete"/>
-                        <button class="btn btn-secondary" id="delete">삭제</button>
+                        <button class="btn btn-secondary" id="deletePost">삭제</button>
                     </form>
                 </div>
             </div>
@@ -37,7 +38,7 @@
 
         <hr class="mx-5 mt-5">
 
-        <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comments'}" id="write_comment" method="post"></form>
+        <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comment'}" id="write_comment" method="post"></form>
         <form class="mx-5 my-3" th:if="${commentList ne null}" th:insert="comment/list.html" id="comments"></form>
 
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>

@@ -18,6 +18,7 @@ public class BoardResponseDTO {
     private String content;
     private String createdDate;
     private String modifiedDate;
+    private Long fileId;
     private List<CommentResponseDTO> comments;
 
     @Builder
@@ -26,6 +27,7 @@ public class BoardResponseDTO {
         this.writer = boardEntity.getWriter();
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
+        this.fileId = boardEntity.getFileId();
         this.createdDate = boardEntity.getCreatedDate();
         this.modifiedDate = boardEntity.getModifiedDate();
         this.comments = boardEntity.getComments().stream().map(CommentResponseDTO::new).collect(Collectors.toList());

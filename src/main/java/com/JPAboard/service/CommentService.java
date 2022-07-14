@@ -42,6 +42,15 @@ public class CommentService {
         return commentResponseDTO;
     }
 
+    public CommentResponseDTO getCommentPw(Long id, String password) {
+        Optional<CommentEntity> commentEntityWraper = commentRepository.findByNumPw(id, password);
+        CommentEntity commentEntity = commentEntityWraper.get();
+
+        CommentResponseDTO commentResponseDTO = new CommentResponseDTO(commentEntity);
+
+        return commentResponseDTO;
+    }
+
     public void deleteComment(Long cno) {
         boardRepository.deleteById(cno);
         userRepository.deleteById(cno);

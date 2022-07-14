@@ -1,7 +1,7 @@
 package com.JPAboard.controller;
 
 import com.JPAboard.domain.entity.UserEntity;
-import com.JPAboard.dto.UserDTO;
+import com.JPAboard.dto.UserRequestDTO;
 import com.JPAboard.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,18 +23,33 @@ public class UserController {
 
     // 회원가입 실행
     @PostMapping("/user/join")
-    public String userJoin(UserEntity userEntity, Model model, UserDTO userDto) {
+    public String userJoin(UserEntity userEntity, Model model, UserRequestDTO userRequestDTO) {
         UserEntity userE = userService.userJoinCheck(userEntity.getUserId());
         if(userE != null) {
             model.addAttribute("joinFail", "같은 아이디를 가진 회원이 이미 존재합니다!");
 
             return "user/join";
         } else {
-            userService.userJoin(userDto);
+            userService.userJoin(userRequestDTO);
 
             return "user/login";
         }
     }
+
+/*    // 회원가입 실행
+    @PostMapping("/user/join")
+    public String userJoin(UserRequestDTO userRequestDTO, Model model, String userId) {
+        UserResponseDTO userResponseDTO = userService.userJoinCheck(userId);
+        if(userResponseDTO != null) {
+            model.addAttribute("joinFail", "같은 아이디를 가진 회원이 이미 존재합니다!");
+
+            return "user/join";
+        } else {
+            userService.userJoin(userRequestDTO);
+
+            return "user/login";
+        }
+    }*/
 
     // 로그인 페이지 연결
     @GetMapping("/user/login")
@@ -59,6 +74,23 @@ public class UserController {
         }
     }
 
+/*    // 로그인 실행
+    @PostMapping("/user/login")
+    public String userLogin(Model model, HttpSession session, String userId, String userPw) {
+        UserResponseDTO userResponseDTO = userService.userLogin(userId, userPw);
+        if(userResponseDTO != null) {
+            session.setAttribute("user", userResponseDTO);
+            session.setAttribute("userName", userResponseDTO.getUserName());
+            model.addAttribute("userData", userResponseDTO);
+
+            return "redirect:/";
+        } else {
+            model.addAttribute("loginFail", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+
+            return "user/login";
+        }
+    }*/
+
     // 비밀번호 찾기 페이지 연결
     @GetMapping("/user/findpw")
     public String findPW() {
@@ -79,6 +111,21 @@ public class UserController {
             return "user/findpw";
         }
     }
+
+/*    // 비밀번호 찾기 실행
+    @PostMapping("/user/findpw")
+    public String findPW(Model model, String userName, String userId) {
+        UserResponseDTO userResponseDTO = userService.findPW(userName, userId);
+        if(userResponseDTO != null) {
+            model.addAttribute("userPw", userResponseDTO.getUserPw());
+
+            return "user/findpw";
+        } else {
+            model.addAttribute("findFail", "일치하는 유저 정보가 없습니다.");
+
+            return "user/findpw";
+        }
+    }*/
 
     // 로그아웃 연결
     @GetMapping("/user/logout")

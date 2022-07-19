@@ -3,6 +3,7 @@ package com.JPAboard.service;
 import com.JPAboard.domain.entity.BoardEntity;
 import com.JPAboard.domain.repository.BoardRepository;
 import com.JPAboard.domain.repository.CommentRepository;
+import com.JPAboard.domain.repository.FileRepository;
 import com.JPAboard.domain.repository.UserRepository;
 import com.JPAboard.dto.BoardRequestDTO;
 import com.JPAboard.dto.BoardResponseDTO;

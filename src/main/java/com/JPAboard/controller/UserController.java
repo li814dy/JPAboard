@@ -1,19 +1,30 @@
 package com.JPAboard.controller;
 
 import com.JPAboard.domain.entity.UserEntity;
+import com.JPAboard.dto.FileRequestDTO;
+import com.JPAboard.dto.FileResponseDTO;
 import com.JPAboard.dto.UserRequestDTO;
+import com.JPAboard.dto.UserResponseDTO;
+import com.JPAboard.service.FileService;
 import com.JPAboard.service.UserService;
 import lombok.AllArgsConstructor;
+import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 
 @AllArgsConstructor
 @Controller
 public class UserController {
     private UserService userService;
+    private FileService fileService;
 
     // 회원가입 페이지 연결
     @GetMapping("/user/join")
@@ -22,7 +33,7 @@ public class UserController {
     }
 
     // 회원가입 실행
-    @PostMapping("/user/join")
+/*    @PostMapping("/user/join")
     public String userJoin(UserEntity userEntity, Model model, UserRequestDTO userRequestDTO) {
         UserEntity userE = userService.userJoinCheck(userEntity.getUserId());
         if(userE != null) {
@@ -33,6 +44,55 @@ public class UserController {
             userService.userJoin(userRequestDTO);
 
             return "user/login";
+        }
+    }*/
+
+    @PostMapping("/user/join")
+    public String userJoin(@RequestParam(value = "file", required = false) MultipartFile multipartFile, UserEntity userEntity, UserRequestDTO userRequestDTO, Model model) {
+        UserEntity userE = userService.userJoinCheck(userEntity.getUserId());
+        if(userE != null) {
+            model.addAttribute("joinFail", "같은 아이디를 가진 회원이 이미 존재합니다!");
+
+            return "user/join";
+        } else {
+            if(!multipartFile.isEmpty()) {
+                try {
+                    String fileName = multipartFile.getOriginalFilename();
+                    String fileType = StringUtils.getFilenameExtension(fileName);
+                    String fileSize = Long.toString(multipartFile.getSize());
+
+                    String makePath = System.getProperty("user.dir") + "\\files";
+
+                    if (!ObjectUtils.isEmpty(fileType)) {
+                        if (!new File(makePath).exists()) {
+                            try {
+                                new File(makePath).mkdir();
+                            } catch (Exception e) {
+                                e.getStackTrace();
+                            }
+                        }
+                    }
+
+                    String filePath = makePath + "\\" + fileName;
+                    multipartFile.transferTo(new File(filePath));
+
+                    FileRequestDTO fileRequestDTO = new FileRequestDTO();
+                    fileRequestDTO.setFileName(fileName);
+                    fileRequestDTO.setFilePath(filePath);
+                    fileRequestDTO.setFileType(fileType);
+                    fileRequestDTO.setFileSize(fileSize);
+
+                    Long fileId = fileService.saveFile(fileRequestDTO);
+                    userRequestDTO.setFileId(fileId);
+                    userService.userJoin(userRequestDTO);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                userService.userJoin(userRequestDTO);
+            }
+
+            return "redirect:user/login";
         }
     }
 
@@ -59,12 +119,15 @@ public class UserController {
 
     // 로그인 실행
     @PostMapping("/user/login")
-    public String userLogin(UserEntity userEntity, Model model, HttpSession session) {
+    public String userLogin(UserEntity userEntity, Model model, HttpServletRequest request) {
         UserEntity userE = userService.userLogin(userEntity.getUserId(), userEntity.getUserPw());
+        UserResponseDTO userResponseDTO = userService.getUser(userE.getUserNum());
+
         if(userE != null) {
-            session.setAttribute("user", userE);
-            session.setAttribute("userName", userE.getUserName());
-            model.addAttribute("userData", userE);
+            HttpSession session = request.getSession();
+            session.setMaxInactiveInterval(600);            // 10분
+            session.setAttribute("user", userResponseDTO);
+            session.setAttribute("userFile", userResponseDTO.getFileId());
 
             return "redirect:/";
         } else {
@@ -136,10 +199,56 @@ public class UserController {
     // 로그아웃 실행
     @PostMapping("/user/logout")
     public String userLogout(Model model, HttpSession session) {
-        model.addAttribute("userData", null);
         session.removeAttribute("user");
-        session.removeAttribute("userName");
         session.invalidate();
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/{userId}")
+    public String userDetail(HttpServletRequest request, HttpSession session) {
+        if (request.getSession() != null | session.getAttribute("user") != null) {
+            session = request.getSession();
+            session.getAttribute("user");
+        }
+        return "user/detail";
+    }
+
+    @GetMapping("/user/{userId}/edit")
+    public String userEdit(HttpServletRequest request, HttpSession session) {
+        if (request.getSession() != null | session.getAttribute("user") != null) {
+            session = request.getSession();
+            session.getAttribute("user");
+        }
+        return "user/update";
+    }
+
+    @PutMapping("/user/{userId}/edit")
+    public String userUpdate(UserRequestDTO userRequestDTO, HttpServletRequest request, HttpSession session) {
+        userService.userJoin(userRequestDTO);
+
+        UserEntity userE = userService.userLogin(userRequestDTO.getUserId(), userRequestDTO.getUserPw());
+        UserResponseDTO userResponseDTO = userService.getUser(userE.getUserNum());
+
+        session.setAttribute("user", userResponseDTO);
+
+        if (request.getSession() != null | session.getAttribute("user") != null) {
+            session = request.getSession();
+            session.getAttribute("user");
+        }
+
+        return "redirect:/user/{userId}";
+    }
+
+    @DeleteMapping("/user/{userId}")
+    public String delete(@PathVariable("userId") String userId, UserResponseDTO userResponseDTO, HttpSession session) {
+        userResponseDTO = userService.userCheck(userId);
+        userService.deleteUser(userResponseDTO.getUserNum());
+
+        if (session.getAttribute("user") != null) {
+            session.removeAttribute("user");
+            session.invalidate();
+        }
 
         return "redirect:/";
     }

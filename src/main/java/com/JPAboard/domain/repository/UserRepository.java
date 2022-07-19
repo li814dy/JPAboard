@@ -20,6 +20,9 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     UserEntity findUserPw(@Param("userName")String userName, @Param("userId")String userId);
 
 /*    @Query("SELECT u from UserEntity u where u.userId=:userId")
+    Optional<UserEntity> findByUid(@Param("userNum")Long userNum, @Param("userId")String userId, @Param("userPw")String userPw, @Param("userName")String userName, @Param("fileId")Long fileId);*/
+
+/*    @Query("SELECT u from UserEntity u where u.userId=:userId")
     Optional<UserEntity> checkUserInfo(@Param("userId")String userId);
 
     @Query("SELECT u from UserEntity u where u.userId=:userId and u.userPw=:userPw")

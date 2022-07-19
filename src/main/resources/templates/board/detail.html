@@ -40,14 +40,18 @@
         <div class="row">
             <div class="col-8 mb-3 fs-5" th:text="${board.content}"></div>
             <div class="col-4">
-                <div class="row" th:if="${board.fileId != null}">
+                <div class="row mb-3" th:if="${board.fileId != null}">
                     <div class="col-3">
                         <strong>첨부파일 : </strong>
                     </div>
                     <div class="col-6 text-start">
                         <a class="text-decoration-none" th:href="@{'/post/'+ ${board.id} + '/' + ${board.fileId}}" th:text="${file.fileName}"></a>
+
                     </div>
                     <div class="col-3 text-end">[[${file.fileSize}]] bytes</div>
+                </div>
+                <div class="row" th:if="${board.fileId != null}">
+                    <img class="border border-dark border-2" th:src="'/file/'+${board.fileId}" style="width:auto; height:100px;"/>
                 </div>
             </div>
         </div>
@@ -59,4 +63,5 @@
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
     </div>
 </body>
+
 </html>

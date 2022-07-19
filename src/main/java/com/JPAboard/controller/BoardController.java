@@ -6,6 +6,7 @@ import com.JPAboard.service.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class BoardController {
     }*/
 
     @PostMapping("/post/write")
-    public String write(@RequestParam(value = "file", required = false) MultipartFile multipartFile, BoardRequestDTO boardRequestDTO, Model model) {
+    public String write(@RequestParam(value = "file", required = false) MultipartFile multipartFile, BoardRequestDTO boardRequestDTO) {
         if(!multipartFile.isEmpty()) {
             try {
                 String fileName = multipartFile.getOriginalFilename();
@@ -110,7 +111,10 @@ public class BoardController {
     @GetMapping("/post/{no}/edit")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        FileResponseDTO fileResponseDTO = fileService.getFile(boardResponseDTO.getFileId());
+
         model.addAttribute("board", boardResponseDTO);
+        model.addAttribute("file", fileResponseDTO);
 
         return "board/update";
     }
@@ -137,15 +141,5 @@ public class BoardController {
         model.addAttribute("boardList", boardDTOList);
 
         return "board/list";
-    }
-
-    // 파일 다운로드 설정
-    @GetMapping("/post/{id}/{fileId}")
-    public ResponseEntity<Resource> fileDownload(@PathVariable("id") Long id, @PathVariable("fileId") Long fileId) throws IOException {
-        FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
-        Path path = Paths.get(fileResponseDTO.getFilePath());
-        Resource resource = new InputStreamResource(Files.newInputStream(path));
-
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResponseDTO.getFileName() + "\"").body(resource);
     }
 }

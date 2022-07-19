@@ -26,11 +26,15 @@ public class UserEntity extends TimeEntity {
     @Column(length = 30, nullable = false)
     private String userName;
 
+    @Column
+    private Long fileId;
+
     @Builder
-    public UserEntity(Long userNum, String userId, String userPw, String userName) {
+    public UserEntity(Long userNum, String userId, String userPw, String userName, Long fileId) {
         this.userNum = userNum;
         this.userId = userId;
         this.userPw = userPw;
         this.userName = userName;
+        this.fileId = fileId;
     }
 }

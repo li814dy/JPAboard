@@ -14,6 +14,7 @@ public class UserRequestDTO {
     private String userId;
     private String userPw;
     private String userName;
+    private Long fileId;
 
     // DTO to Entity
     public UserEntity toEntity(){
@@ -22,6 +23,7 @@ public class UserRequestDTO {
                 .userId(userId)
                 .userPw(userPw)
                 .userName(userName)
+                .fileId(fileId)
                 .build();
         return userEntity;
     }

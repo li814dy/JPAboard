@@ -16,6 +16,8 @@ public class UserResponseDTO {
     private String userName;
     private String createdDate;
     private String modifiedDate;
+    private Long fileId;
+
     // Entity to DTO
     @Builder
     public UserResponseDTO(UserEntity userEntity) {
@@ -25,5 +27,6 @@ public class UserResponseDTO {
         this.userName = userEntity.getUserName();
         this.createdDate = userEntity.getCreatedDate();
         this.modifiedDate = userEntity.getModifiedDate();
+        this.fileId = userEntity.getFileId();
     }
 }

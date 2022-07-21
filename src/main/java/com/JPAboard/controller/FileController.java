@@ -1,7 +1,6 @@
 package com.JPAboard.controller;
 
 import com.JPAboard.dto.FileResponseDTO;
-import com.JPAboard.dto.UserResponseDTO;
 import com.JPAboard.service.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -27,7 +25,7 @@ import java.nio.file.Paths;
 public class FileController {
     private FileService fileService;
 
-    // 파일 다운로드 설정
+    // 파일 다운로드 설정 - 게시물
     @GetMapping("/post/{id}/{fileId}")
     public ResponseEntity<Resource> fileDownload(@PathVariable("id") Long id, @PathVariable("fileId") Long fileId) throws IOException {
         FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
@@ -37,7 +35,7 @@ public class FileController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileResponseDTO.getFileName(), "UTF-8") + "\"").body(resource);
     }
 
-    // 파일 디스플레이 설정
+    // 파일 디스플레이 설정 - 게시물
     @GetMapping("/file/{fileId}")
     public ResponseEntity<byte[]> fileDisplay(@PathVariable("fileId") Long fileId) throws IOException {
         FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
@@ -52,21 +50,9 @@ public class FileController {
         }
     }
 
-/*    @GetMapping("/file/user/{fileId}")
-    public ResponseEntity<byte[]> imgDisplay(@PathVariable("fileId") Long fileId) throws IOException {
-        FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
-
-        if (fileResponseDTO != null) {
-            return fileService.displayImg(fileResponseDTO.getFilePath());
-        } else {
-            String filePath = System.getProperty("user.dir") + "\\" + "user.png";
-
-            return fileService.displayImg(filePath);
-        }
-    }*/
-
+    // 파일 디스플레이 설정 - 사용자
     @GetMapping("/file/user/{fileId}")
-    public ResponseEntity<byte[]> imgDisplay(@PathVariable("fileId") Long fileId, HttpServletRequest request) throws IOException {
+    public ResponseEntity<byte[]> imgDisplay(@PathVariable("fileId") Long fileId, HttpSession session) throws IOException {
         FileResponseDTO fileResponseDTO = fileService.getFile(fileId);
 
         if (fileResponseDTO != null) {
@@ -78,7 +64,8 @@ public class FileController {
         }
     }
 
-    @GetMapping("/file/null")
+    // 이미지 null 디스플레이 설정 - 사용자
+    @GetMapping("/file/user/null")
     public ResponseEntity<byte[]> nullDisplay() throws IOException {
         String filePath = System.getProperty("user.dir") + "\\" + "user.png";
 

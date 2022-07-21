@@ -12,7 +12,7 @@
     <div class="mb-3" th:insert="common/header.html" id="header"></div>
 
     <div class="mx-3 my-5">
-        <form action="/user/join" method="post" enctype="utf-8">
+        <form action="/user/join" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <div class="row m-3">
                     <div class="col-4"></div>
@@ -42,7 +42,7 @@
                     <div class="col-4"></div>
                     <label class="col-1 col-form-label" for="file">Profile : </label>
                     <div class="col-3">
-                        <input class="form-control" type="file" id="file" name="file" multiple>
+                        <input class="form-control" type="file" id="file" name="file">
                     </div>
                     <div class="col-4"></div>
                 </div>

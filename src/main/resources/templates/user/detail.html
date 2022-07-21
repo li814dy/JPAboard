@@ -48,16 +48,12 @@
     </div>
 
     <div class="row m-3">
-        <div class="col">프로필 이미지 : </div>
-        <div class="col text-end" th:if="${session.user.fileId != null}">
-            <div class="row">
-                <a class="text-decoration-none" th:href="@{'/user/'+ ${session.user.fileId}}" th:text="${file.fileName}"></a>
-            </div>
-            <div class="row">
-                <img class="border border-dark border-2" th:src="'/file'+'/user/'+${session.user.fileId}" style="width:auto; height:100px;"/>
-            </div>
+        <div class="col-6">프로필 이미지 : </div>
+        <div class="col-3" th:if="${session.user.fileId != null}">[[${session.userFile.fileName}]]</div>
+        <div class="col-3 text-end" th:if="${session.user.fileId != null}">
+            <img class="border border-dark border-2" th:src="'/file/user/'+${session.user.fileId}" style="width:auto; height:100px;"/>
         </div>
-        <div class="col text-end" th:unless="${session.user.fileId != null}">(파일 없음)</div>
+        <div class="col-6 text-end" th:unless="${session.user.fileId != null}">(파일 없음)</div>
     </div>
 
     <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>

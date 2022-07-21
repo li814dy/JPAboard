@@ -19,8 +19,10 @@ public class BoardResponseDTO {
     private String createdDate;
     private String modifiedDate;
     private Long fileId;
+/*    private Long[] files;*/
     private List<CommentResponseDTO> comments;
 
+    // Entity to DTO
     @Builder
     public BoardResponseDTO(BoardEntity boardEntity) {
         this.id = boardEntity.getId();

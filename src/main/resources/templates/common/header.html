@@ -14,7 +14,7 @@
             <th:block th:unless="${session.user eq null}">
                 <div class="row">
                     <a class="col-8 text-end text-decoration-none" th:href="@{'/user/'+${session.user.userId}}">
-                        <img class="col-10 border border-dark border-2 rounded-circle" th:src="'/file/'+${session.user.fileId}" style="width: auto; height: 30px;" />
+                        <img class="col-10 border border-dark border-2 rounded-circle" th:src="'/file/user/'+${session.user.fileId}" style="width: 30px; height: 30px;" />
                         <label class="col-2 text-end">[[${session.user.userName}]] 님</label>
                     </a>
                     <div class="col-4 text-end">

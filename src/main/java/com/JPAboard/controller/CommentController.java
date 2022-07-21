@@ -38,6 +38,8 @@ public class CommentController {
             if (commentResponseDTO.getPassword().equals(password)) {
                 model.addAttribute("comment", commentResponseDTO);
                 commentService.saveComment(cno, commentRequestDTO);
+            } else {
+                model.addAttribute("");
             }
         }
         return "redirect:/post/" + no;

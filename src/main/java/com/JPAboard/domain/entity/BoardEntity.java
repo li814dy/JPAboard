@@ -28,6 +28,8 @@ public class BoardEntity extends TimeEntity {
 
     @Column
     private Long fileId;
+/*    @Column
+    private Long[] files;*/
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments;

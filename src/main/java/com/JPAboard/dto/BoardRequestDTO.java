@@ -16,6 +16,7 @@ public class BoardRequestDTO {
     private String title;
     private String content;
     private Long fileId;
+    /*private Long[] files;*/
     private List<CommentEntity> comments;
 
     // DTO to Entity

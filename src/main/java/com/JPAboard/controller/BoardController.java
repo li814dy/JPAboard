@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,53 +40,10 @@ public class BoardController {
     }
 
 /*    @PostMapping("/post/write")
-    public String write(@RequestParam(value = "file", required = false) MultipartFile multipartFile, BoardRequestDTO boardRequestDTO) {
-        if(!multipartFile.isEmpty()) {
-            try {
-                String fileName = multipartFile.getOriginalFilename();
-                String fileType = StringUtils.getFilenameExtension(fileName);
-                String fileSize = Long.toString(multipartFile.getSize());
-
-                String makePath = System.getProperty("user.dir") + "\\files";
-
-                if (!ObjectUtils.isEmpty(fileType)) {
-                    if (!new File(makePath).exists()) {
-                        try {
-                            new File(makePath).mkdir();
-                        } catch (Exception e) {
-                            e.getStackTrace();
-                        }
-                    }
-                }
-
-                String filePath = makePath + "\\" + fileName;
-                multipartFile.transferTo(new File(filePath));
-
-                FileRequestDTO fileRequestDTO = new FileRequestDTO();
-                fileRequestDTO.setFileName(fileName);
-                fileRequestDTO.setFilePath(filePath);
-                fileRequestDTO.setFileType(fileType);
-                fileRequestDTO.setFileSize(fileSize);
-
-                Long fileId = fileService.saveFile(fileRequestDTO);
-                boardRequestDTO.setFileId(fileId);
-                boardService.savePost(boardRequestDTO);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            boardService.savePost(boardRequestDTO);
-        }
-
-        return "redirect:/";
-    }*/
-
-    @PostMapping("/post/write")
     public String write(@RequestParam(value = "file", required = false) List<MultipartFile> multipartFile, BoardRequestDTO boardRequestDTO) {
         if(!multipartFile.isEmpty()) {
+            List<Long> fileIds = new ArrayList<>();
             try {
-                List<Long> fileId = new ArrayList<>();
-
                 for (MultipartFile files : multipartFile) {
                     String fileName = files.getOriginalFilename();
                     String fileType = StringUtils.getFilenameExtension(fileName);
@@ -112,9 +70,59 @@ public class BoardController {
                     fileRequestDTO.setFileType(fileType);
                     fileRequestDTO.setFileSize(fileSize);
 
-                    fileId.add(fileService.saveFile(fileRequestDTO));
+                    fileIds.add(fileService.saveFile(fileRequestDTO));
                 }
-                boardRequestDTO.setFiles(fileId);
+                boardRequestDTO.setFiles(fileIds);
+                boardService.savePost(boardRequestDTO);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            boardService.savePost(boardRequestDTO);
+        }
+
+        return "redirect:/";
+    }*/
+
+    @PostMapping("/post/write")
+    public String write(@RequestParam(value = "file", required = false) List<MultipartFile> multipartFile, BoardRequestDTO boardRequestDTO) {
+        int check = 1;
+        List<Long> fileIds = new ArrayList<>();
+
+        for (MultipartFile files: multipartFile) {
+            if (files.isEmpty()) check = 0;
+        }
+        if (check == 1) {
+            try {
+                for (MultipartFile files : multipartFile) {
+                    String fileName = files.getOriginalFilename();
+                    String fileType = StringUtils.getFilenameExtension(fileName);
+                    String fileSize = Long.toString(files.getSize());
+
+                    String makePath = System.getProperty("user.dir") + "\\files";
+
+                    if (!ObjectUtils.isEmpty(fileType)) {
+                        if (!new File(makePath).exists()) {
+                            try {
+                                new File(makePath).mkdir();
+                            } catch (Exception e) {
+                                e.getStackTrace();
+                            }
+                        }
+                    }
+
+                    String filePath = makePath + "\\" + fileName;
+                    files.transferTo(new File(filePath));
+
+                    FileRequestDTO fileRequestDTO = new FileRequestDTO();
+                    fileRequestDTO.setFileName(fileName);
+                    fileRequestDTO.setFilePath(filePath);
+                    fileRequestDTO.setFileType(fileType);
+                    fileRequestDTO.setFileSize(fileSize);
+
+                    fileIds.add(fileService.saveFile(fileRequestDTO));
+                }
+                boardRequestDTO.setFiles(fileIds);
                 boardService.savePost(boardRequestDTO);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,25 +133,6 @@ public class BoardController {
 
         return "redirect:/";
     }
-
-/*    @GetMapping("/post/{no}")
-    public String detail(@PathVariable("no") Long no, Model model) {
-        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
-        List<CommentResponseDTO> comments = boardResponseDTO.getComments();
-
-        model.addAttribute("board", boardResponseDTO);
-
-        if (boardResponseDTO.getFileId() != null) {
-            FileResponseDTO fileResponseDTO = fileService.getFile(boardResponseDTO.getFileId());
-            model.addAttribute("file", fileResponseDTO);
-        }
-
-        if (comments != null && !comments.isEmpty()) {
-            model.addAttribute("comments", comments);
-        }
-
-        return "board/detail";
-    }*/
 
     @Transactional
     @GetMapping("/post/{no}")
@@ -165,20 +154,6 @@ public class BoardController {
 
         return "board/detail";
     }
-
-/*    @GetMapping("/post/{no}/edit")
-    public String edit(@PathVariable("no") Long no, Model model) {
-        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
-
-        model.addAttribute("board", boardResponseDTO);
-
-        if (boardResponseDTO.getFileId() != null) {
-            FileResponseDTO fileResponseDTO = fileService.getFile(boardResponseDTO.getFileId());
-            model.addAttribute("file", fileResponseDTO);
-        }
-
-        return "board/update";
-    }*/
 
     @Transactional
     @GetMapping("/post/{no}/edit")

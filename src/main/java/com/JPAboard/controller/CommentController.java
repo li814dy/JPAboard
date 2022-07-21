@@ -1,6 +1,5 @@
 package com.JPAboard.controller;
 
-import com.JPAboard.domain.entity.CommentEntity;
 import com.JPAboard.dto.CommentRequestDTO;
 import com.JPAboard.dto.CommentResponseDTO;
 import com.JPAboard.service.CommentService;

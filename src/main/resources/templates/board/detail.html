@@ -63,6 +63,7 @@
         </div>
 
         <hr class="mx-5 mt-5">
+        <div class="mx-5"><strong>Comments</strong></div>
         <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comment'}" id="write_comment" method="post"></form>
         <form class="mx-5 my-3" th:if="${comments ne null}" th:insert="comment/list.html" id="comments"></form>
 

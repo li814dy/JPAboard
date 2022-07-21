@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,22 +27,22 @@ public class BoardEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @ElementCollection
+    @CollectionTable(name = "files")
     @Column
-    private Long fileId;
-/*    @Column
-    private Long[] files;*/
+    private List<Long> files;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments;
 
     // 생성자
     @Builder
-    public BoardEntity(Long id, String title, String content, String writer, Long fileId, List<CommentEntity> comments) {
+    public BoardEntity(Long id, String title, String content, String writer, List<Long> files, List<CommentEntity> comments) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
-        this.fileId = fileId;
+        this.files = files;
         this.comments = comments;
     }
 }

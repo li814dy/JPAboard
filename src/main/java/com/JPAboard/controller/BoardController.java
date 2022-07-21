@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class BoardController {
 
                     fileId.add(fileService.saveFile(fileRequestDTO));
                 }
-                boardRequestDTO.setFileId(fileId.toArray(new Long[multipartFile.size()]));
+                boardRequestDTO.setFiles(fileId);
                 boardService.savePost(boardRequestDTO);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,7 +126,7 @@ public class BoardController {
         return "redirect:/";
     }
 
-    @GetMapping("/post/{no}")
+/*    @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardResponseDTO boardResponseDTO = boardService.getPost(no);
         List<CommentResponseDTO> comments = boardResponseDTO.getComments();
@@ -138,13 +139,34 @@ public class BoardController {
         }
 
         if (comments != null && !comments.isEmpty()) {
-            model.addAttribute("commentList", comments);
+            model.addAttribute("comments", comments);
         }
+
+        return "board/detail";
+    }*/
+
+    @Transactional
+    @GetMapping("/post/{no}")
+    public String detail(@PathVariable("no") Long no, Model model) {
+        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        List<CommentResponseDTO> comments = boardResponseDTO.getComments();
+        List<Long> fileIds = boardResponseDTO.getFiles();
+
+        if (fileIds != null && !fileIds.isEmpty()) {
+            List<FileResponseDTO> files = fileService.getFiles(boardResponseDTO.getFiles());
+            model.addAttribute("files", files);
+        }
+
+        if (comments != null && !comments.isEmpty()) {
+            model.addAttribute("comments", comments);
+        }
+
+        model.addAttribute("board", boardResponseDTO);
 
         return "board/detail";
     }
 
-    @GetMapping("/post/{no}/edit")
+/*    @GetMapping("/post/{no}/edit")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardResponseDTO boardResponseDTO = boardService.getPost(no);
 
@@ -153,6 +175,22 @@ public class BoardController {
         if (boardResponseDTO.getFileId() != null) {
             FileResponseDTO fileResponseDTO = fileService.getFile(boardResponseDTO.getFileId());
             model.addAttribute("file", fileResponseDTO);
+        }
+
+        return "board/update";
+    }*/
+
+    @Transactional
+    @GetMapping("/post/{no}/edit")
+    public String edit(@PathVariable("no") Long no, Model model) {
+        BoardResponseDTO boardResponseDTO = boardService.getPost(no);
+        List<Long> fileIds = boardResponseDTO.getFiles();
+
+        model.addAttribute("board", boardResponseDTO);
+
+        if (fileIds != null && !fileIds.isEmpty()) {
+            List<FileResponseDTO> files = fileService.getFiles(boardResponseDTO.getFiles());
+            model.addAttribute("files", files);
         }
 
         return "board/update";

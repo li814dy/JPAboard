@@ -39,26 +39,32 @@
 
         <div class="row">
             <div class="col-8 mb-3 fs-5" th:text="${board.content}"></div>
-            <div class="col-4">
-                <div class="row mb-3" th:if="${board.fileId != null}">
+            <div class="col-4 mb-3">
+                <div class="row" th:if="${board.files != null}">
                     <div class="col-3">
                         <strong>첨부파일 : </strong>
                     </div>
-                    <div class="col-6 text-start">
-                        <a class="text-decoration-none" th:href="@{'/post/'+ ${board.id} + '/' + ${board.fileId}}" th:text="${file.fileName}"></a>
-
+                    <div class="col-9">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 p-0 mb-1" th:each="file : ${files}">
+                                <div class="row">
+                                    <div class="col-8 text-start">
+                                        <a class="text-decoration-none" th:href="@{'/post/'+ ${board.id} + '/' + ${file.fileId}}" th:text="${file.fileName}">a</a>
+                                        <br>
+                                        <img class="border border-dark border-2" th:src="'/file/'+${file.fileId}" style="width:auto; height:100px;"/>
+                                    </div>
+                                    <div class="col-4 text-end">[[${file.fileSize}]] bytes</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-3 text-end">[[${file.fileSize}]] bytes</div>
-                </div>
-                <div class="row" th:if="${board.fileId != null}">
-                    <img class="border border-dark border-2" th:src="'/file/'+${board.fileId}" style="width:auto; height:100px;"/>
                 </div>
             </div>
         </div>
 
         <hr class="mx-5 mt-5">
         <form class="mx-5 my-3" th:insert="comment/write.html" th:action="@{'/post/'+${board.id}+'/comment'}" id="write_comment" method="post"></form>
-        <form class="mx-5 my-3" th:if="${commentList ne null}" th:insert="comment/list.html" id="comments"></form>
+        <form class="mx-5 my-3" th:if="${comments ne null}" th:insert="comment/list.html" id="comments"></form>
 
         <div class="bg-light pb-1" th:insert="common/footer.html" id="footer"></div>
     </div>

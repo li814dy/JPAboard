@@ -5,6 +5,7 @@ import com.JPAboard.domain.entity.CommentEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,8 +19,7 @@ public class BoardResponseDTO {
     private String content;
     private String createdDate;
     private String modifiedDate;
-    private Long fileId;
-/*    private Long[] files;*/
+    private List<Long> files;
     private List<CommentResponseDTO> comments;
 
     // Entity to DTO
@@ -29,7 +29,7 @@ public class BoardResponseDTO {
         this.writer = boardEntity.getWriter();
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
-        this.fileId = boardEntity.getFileId();
+        this.files = boardEntity.getFiles();
         this.createdDate = boardEntity.getCreatedDate();
         this.modifiedDate = boardEntity.getModifiedDate();
         this.comments = boardEntity.getComments().stream().map(CommentResponseDTO::new).collect(Collectors.toList());

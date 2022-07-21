@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -34,6 +36,21 @@ public class FileService {
         FileResponseDTO fileResponseDTO = new FileResponseDTO(fileEntity);
 
         return fileResponseDTO;
+    }
+
+    @Transactional
+    public List<FileResponseDTO> getFiles(List<Long> fileId) {
+        List<FileResponseDTO> fileResponseDTOs = new ArrayList<>();
+
+        for (Long fileIds : fileId) {
+            Optional<FileEntity> fileEntityWrapper = fileRepository.findById(fileIds);
+            FileEntity fileEntity = fileEntityWrapper.get();
+
+            FileResponseDTO fileResponseDTO = new FileResponseDTO(fileEntity);
+            fileResponseDTOs.add(fileResponseDTO);
+        }
+
+        return fileResponseDTOs;
     }
 
     public ResponseEntity<byte[]> displayImg(String filePath) throws IOException {

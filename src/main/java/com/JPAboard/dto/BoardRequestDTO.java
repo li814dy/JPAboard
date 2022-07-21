@@ -5,6 +5,7 @@ import com.JPAboard.domain.entity.CommentEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -15,7 +16,7 @@ public class BoardRequestDTO {
     private String writer;
     private String title;
     private String content;
-    private Long fileId;
+    private List<Long> files;
     private List<CommentEntity> comments;
 
     // DTO to Entity
@@ -25,7 +26,7 @@ public class BoardRequestDTO {
                 .writer(writer)
                 .title(title)
                 .content(content)
-                .fileId(fileId)
+                .files(files)
                 .comments(comments)
                 .build();
         return boardEntity;

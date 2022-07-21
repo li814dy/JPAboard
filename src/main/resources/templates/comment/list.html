@@ -1,12 +1,13 @@
 <div class="mb-3 rounded border-light">
   <ul class="list-group">
-    <li class="list-group-item m-3 py-3 px-5" th:each="comment : ${commentList}">
+    <li class="list-group-item m-3 py-3 px-5" th:each="comment : ${comments}">
       <div class="row my-1">
         <div class="col-2">작성자 : [[${comment.writer}]]</div>
         <div class="col-3 text-end">작성 시간 : [[${comment.createdDate}]]</div>
         <div class="col-3 text-end">수정 시간 : [[${comment.modifiedDate}]]</div>
         <div class="col-2 text-end">
-          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="CommentEdit1 CommentEdit2">편집</button>
+          <!--<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="CommentEdit1 CommentEdit2">편집</button>-->
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="CommentE CommentEdit">편집</button>
         </div>
         <div class="col-2 text-end">
           <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#CommentDelete" aria-expanded="false" aria-controls="CommentDelete">삭제</button>
@@ -31,10 +32,10 @@
         </div>
       </div>
 
-      <div class="collapse show multi-collapse" id="CommentEdit1">
+      <div class="collapse multi-collapse show" id="CommentE">
         <div class="row my-5 mx-3" th:text="${comment.content}"></div>
       </div>
-      <div class="collapse multi-collapse" id="CommentEdit2">
+      <div class="collapse multi-collapse" id="CommentEdit">
         <form class="my-5" th:action="@{'/post/' + ${board.id} + '/comment/' + ${comment.id} + '/edit'}" method="post">
           <input type="hidden" name="_method" value="put"/>
           <input type="hidden" name="id" th:value="${board.id}"/>
